@@ -109,6 +109,16 @@ Run the verification command.
             with self.assertRaisesRegex(ValueError, "limit must"):
                 search_vault(vault, "valid", limit=0)
 
+    def test_search_reports_count_without_disclosing_skipped_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "large-private.md").write_text("# Large\n\n" + "x" * (MAX_FILE_BYTES + 1), encoding="utf-8")
+            diagnostics = {}
+
+            search_vault(vault, "private", diagnostics=diagnostics)
+
+            self.assertEqual({"skipped_files": 1}, diagnostics)
+
     def test_search_skips_oversized_markdown_file(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)

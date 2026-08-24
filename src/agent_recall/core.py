@@ -15,6 +15,14 @@ MAX_FILE_BYTES = 1_048_576
 MAX_OUTPUT_CHARS = 20_000
 
 
+class RecallError(ValueError):
+    """Stable public diagnostic without sensitive path details."""
+
+    def __init__(self, code: str, message: str):
+        super().__init__(message)
+        self.code = code
+
+
 @dataclass(frozen=True)
 class SearchHit:
     score: float
@@ -167,15 +175,23 @@ def _score(
     return round(sum(components.values()), 3), components
 
 
-def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
+def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str, int] | None = None) -> list[SearchHit]:
     """Return ranked Markdown chunk hits without exposing absolute paths."""
+    if diagnostics is not None:
+        diagnostics.clear()
+        diagnostics["skipped_files"] = 0
+
+    def skipped() -> None:
+        if diagnostics is not None:
+            diagnostics["skipped_files"] += 1
+
     terms = _words(query)
     if len(query) > MAX_QUERY_CHARS:
         raise ValueError(f"query length must not exceed {MAX_QUERY_CHARS} characters")
     if not 1 <= limit <= MAX_LIMIT:
         raise ValueError(f"limit must be between 1 and {MAX_LIMIT}")
     if not vault.is_dir():
-        raise ValueError(f"Vault directory does not exist: {vault}")
+        raise RecallError("VAULT_NOT_FOUND", "Selected vault directory is unavailable")
     resolved_vault = vault.resolve(strict=True)
     documents: list[tuple[MarkdownChunk, Counter[str]]] = []
     for path in vault.rglob("*.md"):
@@ -183,14 +199,18 @@ def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
             resolved_path = path.resolve(strict=True)
             resolved_path.relative_to(resolved_vault)
         except (OSError, ValueError):
+            skipped()
             continue
         if not resolved_path.is_file():
+            skipped()
             continue
         try:
             if resolved_path.stat().st_size > MAX_FILE_BYTES:
+                skipped()
                 continue
             body = resolved_path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
+            skipped()
             continue
         relative_path = path.relative_to(vault).as_posix()
         for chunk in chunk_markdown(relative_path, body):
