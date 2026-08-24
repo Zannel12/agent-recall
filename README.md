@@ -41,4 +41,4 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 
 ## Status
 
-`v0.1.0` clean-room scaffold. See [CHANGELOG.md](CHANGELOG.md) for the released scope and explicit exclusions. The repository is not yet published; no real vault or personal data belongs in it.
+`v0.1.0` public release. See [CHANGELOG.md](CHANGELOG.md) for the released scope and explicit exclusions. No real vault or personal data belongs in this repository.
