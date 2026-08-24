@@ -1,0 +1,6 @@
+[
+  {"id": "current.md#1", "relative_path": "current.md", "observed_at": "2026-08-24", "status": "current"},
+  {"id": "historical.md#1", "relative_path": "historical.md", "observed_at": "2025-01-01", "status": "historical"},
+  {"id": "superseded.md#1", "relative_path": "superseded.md", "observed_at": "2025-01-01", "status": "superseded"},
+  {"id": "conflicting.md#1", "relative_path": "conflicting.md", "observed_at": "2026-08-24", "status": "conflicting"}
+]
