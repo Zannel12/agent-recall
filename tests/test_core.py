@@ -151,6 +151,15 @@ Run the verification command.
 
             self.assertEqual([], search_vault(vault, "oversized-secret"))
 
+    def test_search_skips_invalid_utf8_markdown_without_leaking_name(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "malformed-private.md").write_bytes(b"\xff\xfe\x80")
+            diagnostics = {}
+
+            self.assertEqual([], search_vault(vault, "anything", diagnostics=diagnostics))
+            self.assertEqual({"skipped_files": 1}, diagnostics)
+
     def test_packet_has_a_deterministic_output_budget(self):
         packet = render_packet("query", [], max_chars=32)
 

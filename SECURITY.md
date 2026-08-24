@@ -22,4 +22,4 @@ They must be quarantined, reviewed, and scanned for secrets/PII before becoming 
 
 ## Reporting
 
-Until a public issue policy exists, do not disclose sensitive findings in a public issue. Contact the repository owner privately through the GitHub profile.
+Report security vulnerabilities privately through [GitHub private vulnerability reporting](https://github.com/Zannel12/agent-recall/security/advisories/new). Do **not** open a public issue for a sensitive finding. Include an affected version or commit, a safe reproduction, impact, and suggested mitigation; do not include credentials, real vault data, or secrets. Maintainers will acknowledge a valid report, but no response-time promise is made.
