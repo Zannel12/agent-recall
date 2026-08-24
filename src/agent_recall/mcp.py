@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import TextIO
 
-from .core import RecallError, search_vault
+from .core import RecallError, follow_evidence, search_vault
 
 
 class McpSearch:
@@ -14,6 +14,14 @@ class McpSearch:
 
     def __init__(self, vault: Path) -> None:
         self._vault = vault
+
+    def read(self, chunk_id: str) -> dict[str, object]:
+        try:
+            chunks = follow_evidence(self._vault, chunk_id, neighbor_limit=0)
+        except (RecallError, ValueError):
+            return {"schema_version": "1.0", "code": "INVALID_EVIDENCE_ID", "message": "Evidence is unavailable."}
+        chunk = chunks[0]
+        return {"schema_version": "1.0", "chunk_id": chunk.chunk_id, "relative_path": chunk.relative_path, "text": chunk.body}
 
     def call(self, arguments: dict[str, object]) -> dict[str, object]:
         if set(arguments) - {"query", "limit"} or not isinstance(arguments.get("query"), str):
@@ -48,6 +56,11 @@ def handle_request(search: McpSearch, request: dict[str, object]) -> dict[str, o
         return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32600, "message": "Invalid Request"}}
     if request["method"] == "tools/list":
         return {"jsonrpc": "2.0", "id": request_id, "result": tools_list()}
+    if request["method"] == "resources/read":
+        params = request.get("params")
+        if not isinstance(params, dict) or set(params) != {"chunk_id"} or not isinstance(params.get("chunk_id"), str):
+            return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32602, "message": "Invalid params"}}
+        return {"jsonrpc": "2.0", "id": request_id, "result": search.read(params["chunk_id"])}
     if request["method"] == "tools/call":
         params = request.get("params")
         if not isinstance(params, dict) or params.get("name") != "search" or not isinstance(params.get("arguments"), dict):
