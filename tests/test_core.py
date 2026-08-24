@@ -3,10 +3,25 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import render_packet, search_vault
+from agent_recall.core import normalize_text, render_packet, search_vault
 
 
 class SearchVaultTests(unittest.TestCase):
+    def test_normalize_text_uses_nfc_and_casefold(self):
+        self.assertEqual("café strasse", normalize_text("Cafe\u0301 STRAẞE"))
+
+    def test_search_matches_decomposed_query_against_composed_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "cafe.md").write_text(
+                "# Café\n\nThe source uses composed Unicode text.\n",
+                encoding="utf-8",
+            )
+
+            hits = search_vault(vault, "Cafe\u0301", limit=1)
+
+            self.assertEqual(["cafe.md"], [hit.relative_path for hit in hits])
+
     def test_search_ranks_title_match_and_keeps_relative_source_path(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)

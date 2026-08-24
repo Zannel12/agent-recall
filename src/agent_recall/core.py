@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,8 +17,13 @@ class SearchHit:
     excerpt: str
 
 
+def normalize_text(text: str) -> str:
+    """Normalize text for deterministic Unicode-insensitive matching."""
+    return unicodedata.normalize("NFC", text).casefold()
+
+
 def _words(text: str) -> set[str]:
-    return {word.lower() for word in _WORD_RE.findall(text)}
+    return set(_WORD_RE.findall(normalize_text(text)))
 
 
 def _title(path: Path, body: str) -> str:
@@ -34,20 +40,22 @@ def _excerpt(body: str, terms: set[str], max_chars: int = 700) -> str:
         content = paragraphs
     if not content:
         return ""
-    selected = max(content, key=lambda part: sum(term in part.lower() for term in terms))
+    selected = max(content, key=lambda part: sum(term in normalize_text(part) for term in terms))
     compact = re.sub(r"\s+", " ", selected).strip()
     return compact if len(compact) <= max_chars else compact[: max_chars - 1].rstrip() + "…"
 
 
 def _score(relative_path: str, title: str, body: str, terms: set[str]) -> float:
-    counts = Counter(_WORD_RE.findall((title + "\n" + body[:20000]).lower()))
+    counts = Counter(_WORD_RE.findall(normalize_text(title + "\n" + body[:20000])))
+    normalized_title = normalize_text(title)
+    normalized_path = normalize_text(relative_path)
     value = 0.0
     for term in terms:
         if counts[term]:
             value += 1.0 + len(str(counts[term]))
-        if term in title.lower():
+        if term in normalized_title:
             value += 4.0
-        if term in relative_path.lower():
+        if term in normalized_path:
             value += 2.0
     return value
 
