@@ -1,0 +1,5 @@
+# Notice
+
+Agent Recall is a separate clean-room project.
+
+Its v0.1 retrieval concepts were informed by local work performed alongside [howdeploy/ObsidianDataWeave](https://github.com/howdeploy/ObsidianDataWeave), an MIT-licensed project. No upstream source file has been copied into this scaffold. See `ADAPTATIONS.md` and `UPSTREAMS.md`.
