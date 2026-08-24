@@ -19,6 +19,21 @@ JSON for an integration:
 agent-recall examples/demo-vault "privacy" --format json
 ```
 
+## Local configuration and doctor
+
+Agent Recall never discovers a vault. Pass one explicitly or use a user-created JSON file:
+
+```json
+{"vault": "/absolute/path/to/your/vault"}
+```
+
+```bash
+agent-recall doctor --config recall.json --json
+# or: agent-recall doctor --vault /absolute/path/to/your/vault --json
+```
+
+`doctor --json` reports only install health, explicit vault accessibility, and whether discovery occurred (`false`). It does not search parent directories, home directories, or agent state.
+
 ## What it does / does not do
 
 | Does | Does not |
