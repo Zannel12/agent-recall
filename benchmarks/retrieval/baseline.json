@@ -1,0 +1,7 @@
+{
+  "retriever": "lexical-v0.1.0",
+  "metrics": {
+    "recall_at_k": 1.0,
+    "mrr": 1.0
+  }
+}

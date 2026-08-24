@@ -1,0 +1,25 @@
+{
+  "dataset": "synthetic",
+  "queries": [
+    {
+      "query": "local privacy",
+      "k": 2,
+      "relevant_paths": ["english/privacy.md"]
+    },
+    {
+      "query": "green release",
+      "k": 2,
+      "relevant_paths": ["english/deployment.md"]
+    },
+    {
+      "query": "локальная память",
+      "k": 2,
+      "relevant_paths": ["russian/pamyat.md"]
+    },
+    {
+      "query": "недоверенный текст",
+      "k": 2,
+      "relevant_paths": ["russian/bezopasnost.md"]
+    }
+  ]
+}
