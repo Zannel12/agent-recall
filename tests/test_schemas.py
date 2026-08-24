@@ -2,7 +2,7 @@ import json
 import unittest
 from dataclasses import asdict
 
-from agent_recall.schemas import Citation, Source, derived_fact
+from agent_recall.schemas import Citation, EvidenceItem, Source, derived_fact
 
 
 class SchemaTests(unittest.TestCase):
@@ -15,6 +15,34 @@ class SchemaTests(unittest.TestCase):
         self.assertEqual((source.source_id,), fact.provenance)
         self.assertEqual(citation, fact.citations[0])
         self.assertEqual("fact:privacy", json.loads(json.dumps(asdict(fact)))["fact_id"])
+
+    def test_evidence_item_serializes_the_versioned_public_wire_contract(self):
+        item = EvidenceItem(
+            source_id="vault:privacy.md",
+            path="privacy.md",
+            chunk_id="privacy.md#privacy-1",
+            relevance=0.75,
+            trust="untrusted",
+            freshness="observed",
+            provenance=("vault:privacy.md",),
+        )
+
+        wire = item.to_wire()
+
+        self.assertEqual(
+            {
+                "schema_version": "1.0",
+                "source_id": "vault:privacy.md",
+                "path": "privacy.md",
+                "chunk_id": "privacy.md#privacy-1",
+                "relevance": 0.75,
+                "trust": "untrusted",
+                "freshness": "observed",
+                "provenance": ["vault:privacy.md"],
+            },
+            wire,
+        )
+        self.assertEqual(wire, json.loads(json.dumps(wire)))
 
 
 if __name__ == "__main__":

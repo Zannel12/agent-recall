@@ -31,6 +31,31 @@ class Fact:
     executable: bool = False
 
 
+
+@dataclass(frozen=True)
+class EvidenceItem:
+    source_id: str
+    path: str
+    chunk_id: str
+    relevance: float
+    trust: str
+    freshness: str
+    provenance: tuple[str, ...]
+    schema_version: str = "1.0"
+
+    def to_wire(self) -> dict[str, object]:
+        return {
+            "schema_version": self.schema_version,
+            "source_id": self.source_id,
+            "path": self.path,
+            "chunk_id": self.chunk_id,
+            "relevance": self.relevance,
+            "trust": self.trust,
+            "freshness": self.freshness,
+            "provenance": list(self.provenance),
+        }
+
+
 def derived_fact(
     fact_id: str,
     text: str,
