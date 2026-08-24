@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, chunk_markdown, follow_evidence, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
+from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, build_local_index, chunk_markdown, follow_evidence, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
 
 
 class SearchVaultTests(unittest.TestCase):
@@ -202,6 +202,24 @@ Run the verification command.
             self.assertEqual("odd.md", hits[0].relative_path)
             self.assertEqual("[unterminated", hits[0].title)
             self.assertEqual("[unterminated", hits[0].heading)
+
+    def test_local_index_is_rebuildable_and_never_written_inside_vault(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            vault = root / "vault"
+            vault.mkdir()
+            (vault / "note.md").write_text("# Note\n\nCanonical source.\n", encoding="utf-8")
+            destination = root / "derived" / "index.json"
+
+            first = build_local_index(vault, destination)
+            second = build_local_index(vault, destination)
+
+            self.assertEqual(first, second)
+            self.assertEqual("markdown_sources", first["authority"])
+            self.assertTrue(first["derived"])
+            self.assertTrue(destination.is_file())
+            with self.assertRaisesRegex(Exception, "Index destination"):
+                build_local_index(vault, vault / "index.json")
 
     def test_follow_evidence_returns_bounded_chunk_neighborhood(self):
         with tempfile.TemporaryDirectory() as directory:

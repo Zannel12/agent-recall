@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import fnmatch
+import json
 import re
 import unicodedata
 from collections import Counter
@@ -189,6 +190,32 @@ def _score(
         "path_boost": path_boost,
     }
     return round(sum(components.values()), 3), components
+
+
+
+def build_local_index(vault: Path, destination: Path) -> dict[str, object]:
+    """Explicitly rebuild a derived JSON index; Markdown remains authoritative."""
+    if not vault.is_dir():
+        raise RecallError("VAULT_NOT_FOUND", "Selected vault directory is unavailable")
+    root = vault.resolve(strict=True)
+    if destination.resolve().is_relative_to(root):
+        raise RecallError("INVALID_INDEX_DESTINATION", "Index destination must be outside the selected vault")
+    records = []
+    for path in sorted(vault.rglob("*.md")):
+        try:
+            resolved = path.resolve(strict=True)
+            resolved.relative_to(root)
+            if resolved.stat().st_size > MAX_FILE_BYTES:
+                continue
+            body = resolved.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError, ValueError):
+            continue
+        relative_path = path.relative_to(vault).as_posix()
+        records.extend({"relative_path": chunk.relative_path, "chunk_id": chunk.chunk_id, "heading": chunk.heading, "body": chunk.body} for chunk in chunk_markdown(relative_path, body))
+    index = {"schema_version": "1.0", "derived": True, "authority": "markdown_sources", "records": records}
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(json.dumps(index, sort_keys=True, ensure_ascii=False), encoding="utf-8")
+    return index
 
 
 def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str, int] | None = None) -> list[SearchHit]:
