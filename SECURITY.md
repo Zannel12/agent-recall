@@ -2,7 +2,7 @@
 
 ## Privacy model
 
-Agent Recall is designed to run locally and read only the selected Markdown vault. It has no network access, telemetry, API keys, or automatic vault writes.
+Agent Recall is designed to run locally and read only the selected Markdown vault. Before any Markdown read it resolves both the selected vault root and the candidate target; a target outside the resolved root (including an external file symlink or nested directory symlink) is skipped. It has no network access, telemetry, API keys, or automatic vault writes.
 
 ## Do not commit
 

@@ -168,10 +168,18 @@ def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
     terms = _words(query)
     if not vault.is_dir():
         raise ValueError(f"Vault directory does not exist: {vault}")
+    resolved_vault = vault.resolve(strict=True)
     documents: list[tuple[MarkdownChunk, Counter[str]]] = []
     for path in vault.rglob("*.md"):
         try:
-            body = path.read_text(encoding="utf-8")
+            resolved_path = path.resolve(strict=True)
+            resolved_path.relative_to(resolved_vault)
+        except (OSError, ValueError):
+            continue
+        if not resolved_path.is_file():
+            continue
+        try:
+            body = resolved_path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
         relative_path = path.relative_to(vault).as_posix()

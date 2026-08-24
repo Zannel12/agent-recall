@@ -24,7 +24,7 @@ No derived layer, adapter, or score is a source-of-truth substitute for cited ca
 
 ## Trust boundary
 
-The vault stays local. Agent Recall reads only `.md` files under the path supplied by the caller. It has no network client, API key, agent runtime dependency, or vault-write feature.
+The vault stays local. Agent Recall resolves the caller-selected vault root before reading and reads a Markdown candidate only when its resolved target remains under that root. External file symlinks and nested directory symlinks are skipped; contained targets remain cited by a relative caller-visible path. It has no network client, API key, agent runtime dependency, or vault-write feature.
 
 ## Design choices
 

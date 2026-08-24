@@ -101,6 +101,29 @@ Run the verification command.
             self.assertGreater(hit.score_components["path_boost"], 0)
             self.assertAlmostEqual(hit.score, sum(hit.score_components.values()))
 
+    def test_search_skips_markdown_symlink_that_resolves_outside_vault(self):
+        with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside_directory:
+            vault = Path(directory)
+            outside = Path(outside_directory)
+            (vault / "safe.md").write_text("# Safe\n\nContained notes only.\n", encoding="utf-8")
+            (outside / "private.md").write_text("# Private\n\noutside-only-secret\n", encoding="utf-8")
+            (vault / "external.md").symlink_to(outside / "private.md")
+
+            hits = search_vault(vault, "outside-only-secret")
+
+            self.assertEqual([], hits)
+
+    def test_search_skips_nested_directory_symlink_that_resolves_outside_vault(self):
+        with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside_directory:
+            vault = Path(directory)
+            outside = Path(outside_directory)
+            (outside / "nested-secret.md").write_text("# Private\n\nnested-outside-secret\n", encoding="utf-8")
+            (vault / "linked-directory").symlink_to(outside, target_is_directory=True)
+
+            hits = search_vault(vault, "nested-outside-secret")
+
+            self.assertEqual([], hits)
+
     def test_packet_includes_query_relative_path_and_excerpt(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
