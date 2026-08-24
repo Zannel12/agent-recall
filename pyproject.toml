@@ -32,6 +32,7 @@ Security = "https://github.com/Zannel12/agent-recall/security/advisories/new"
 
 [project.scripts]
 agent-recall = "agent_recall.cli:main"
+agent-recall-mcp = "agent_recall.mcp:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
