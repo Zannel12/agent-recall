@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Zannel12/agent-recall/protocol/v1/search-request.schema.json",
+  "title": "Agent Recall search request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "query", "vault"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "query": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "vault": {"type": "string", "minLength": 1},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 100}
+  }
+}

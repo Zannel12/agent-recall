@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Zannel12/agent-recall/protocol/v1/citation.schema.json",
+  "title": "Agent Recall citation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "relative_path", "chunk_id", "excerpt"],
+  "properties": {
+    "source_id": {"type": "string", "minLength": 1},
+    "relative_path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.)[^\\\\]+$"},
+    "chunk_id": {"type": "string", "minLength": 1},
+    "excerpt": {"type": "string"},
+    "score": {"type": "number"}
+  }
+}

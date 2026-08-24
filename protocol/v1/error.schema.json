@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Zannel12/agent-recall/protocol/v1/error.schema.json",
+  "title": "Agent Recall protocol error",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "code", "message"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "message": {"type": "string", "minLength": 1},
+    "retryable": {"type": "boolean", "default": false}
+  }
+}
