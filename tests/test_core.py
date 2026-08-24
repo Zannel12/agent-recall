@@ -41,6 +41,28 @@ class SearchVaultTests(unittest.TestCase):
             self.assertEqual("Agent Memory", hits[0].title)
             self.assertNotIn(str(vault), hits[0].relative_path)
 
+    def test_search_exposes_bm25_and_explicit_boost_components(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "notes").mkdir()
+            (vault / "notes" / "retrieval-guide.md").write_text(
+                "# Retrieval Guide\n\nSparse retrieval returns cited local sources.\n",
+                encoding="utf-8",
+            )
+            (vault / "notes" / "background.md").write_text(
+                "# Background\n\nThis note mentions retrieval once.\n",
+                encoding="utf-8",
+            )
+
+            hit = search_vault(vault, "retrieval", limit=1)[0]
+
+            self.assertEqual("notes/retrieval-guide.md", hit.relative_path)
+            self.assertEqual({"bm25", "title_boost", "path_boost"}, set(hit.score_components))
+            self.assertGreater(hit.score_components["bm25"], 0)
+            self.assertGreater(hit.score_components["title_boost"], 0)
+            self.assertGreater(hit.score_components["path_boost"], 0)
+            self.assertAlmostEqual(hit.score, sum(hit.score_components.values()))
+
     def test_packet_includes_query_relative_path_and_excerpt(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
@@ -53,6 +75,7 @@ class SearchVaultTests(unittest.TestCase):
 
             self.assertIn("# Librarian Context Packet — privacy", packet)
             self.assertIn("privacy.md", packet)
+            self.assertIn("- Score details: bm25=", packet)
             self.assertIn("Keep the vault local", packet)
             self.assertNotIn(str(vault), packet)
 

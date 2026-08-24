@@ -14,3 +14,7 @@ PYTHONPATH=src python3 -m unittest tests.test_retrieval_baseline -v
 ```
 
 `baseline.json` is a checked-in no-regression record for the fixture corpus. It is not a claim about retrieval quality on a real vault.
+
+## Current scoring model
+
+The baseline retriever uses a deterministic local BM25-style sparse score with explicit title and relative-path boosts. Every result records `bm25`, `title_boost`, and `path_boost`, so score composition is inspectable in JSON and Markdown packets.
