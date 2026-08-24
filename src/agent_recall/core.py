@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import fnmatch
 import re
 import unicodedata
 from collections import Counter
@@ -13,6 +14,7 @@ MAX_QUERY_CHARS = 4_096
 MAX_LIMIT = 50
 MAX_FILE_BYTES = 1_048_576
 MAX_OUTPUT_CHARS = 20_000
+DEFAULT_SENSITIVITY_PATTERNS = ("*.secret.md", "*.private.md")
 
 
 class RecallError(ValueError):
@@ -207,8 +209,19 @@ def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str,
     if not vault.is_dir():
         raise RecallError("VAULT_NOT_FOUND", "Selected vault directory is unavailable")
     resolved_vault = vault.resolve(strict=True)
+    ignore_file = vault / ".recallignore"
+    ignore_patterns = ()
+    if ignore_file.is_file():
+        ignore_patterns = tuple(
+            line.strip() for line in ignore_file.read_text(encoding="utf-8").splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        )
     documents: list[tuple[MarkdownChunk, Counter[str]]] = []
     for path in vault.rglob("*.md"):
+        relative_path = path.relative_to(vault).as_posix()
+        if any(fnmatch.fnmatchcase(relative_path, pattern) for pattern in ignore_patterns + DEFAULT_SENSITIVITY_PATTERNS):
+            skipped()
+            continue
         try:
             resolved_path = path.resolve(strict=True)
             resolved_path.relative_to(resolved_vault)

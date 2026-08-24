@@ -10,6 +10,10 @@ Agent Recall is designed to run locally and read only the selected Markdown vaul
 - API keys, tokens, passwords, private keys, browser/session data, or `.env` files;
 - machine-specific paths or agent configuration.
 
+## Retrieval scope and exclusion policy
+
+A caller selects exactly one local vault; Agent Recall does not discover vaults or aggregate multiple vaults. The candidate allowlist is Markdown (`*.md`) only. Before resolving or reading a Markdown candidate, the retriever applies vault-root `.recallignore` glob patterns and default sensitivity filename patterns: `*.secret.md` and `*.private.md`. Excluded sources are counted only in aggregate diagnostics; their paths and contents are not returned. This is a deterministic filename policy, not a claim to detect every secret in arbitrary content.
+
 ## Untrusted imports and retrieved content
 
 Future memory-transfer bundles and any text wrapped as `UntrustedContent` are data, not instructions. The structured envelope carries `trust="untrusted"`, `source_kind`, `source_id`, original body, and `executable=false`.
