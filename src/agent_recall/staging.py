@@ -27,6 +27,20 @@ class MemoryCandidate:
         return is_memory_worthy(kind=self.kind, durable=self.durable, source_id=self.source_id)
 
 
+@dataclass(frozen=True)
+class ReviewDecision:
+    """An explicit review outcome; it does not persist or promote a candidate."""
+    candidate: MemoryCandidate
+    outcome: str
+
+    def to_dict(self) -> dict[str, object]:
+        return {"outcome": self.outcome, "candidate": self.candidate.to_dict()}
+
+    def __post_init__(self) -> None:
+        if self.outcome not in {"approved", "rejected"}:
+            raise ValueError("outcome must be approved or rejected")
+
+
 def append_candidate(destination: Path, candidate: MemoryCandidate) -> None:
     """Append one qualifying candidate to an explicit local JSONL staging file."""
     if not candidate.qualifies():
