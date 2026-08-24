@@ -9,6 +9,19 @@ selected local Markdown vault + query
   → calling agent decides what to use
 ```
 
+## Frozen target boundaries
+
+[ADR-0003](docs/adr/0003-layered-architecture-boundaries.md) freezes the product’s authority model:
+
+1. **Curated source vault** is the human-controlled canonical evidence.
+2. **Trusted retrieval core** is the current read-only parser/chunker/ranker/citation path.
+3. A future **managed store** is staged/approved derived memory, never a replacement for curated sources.
+4. A future **derived index** is disposable and rebuildable from canonical inputs.
+5. A future **semantic layer** is optional ranking only, locally bounded and visibly fallback-safe.
+6. **Adapters** are bounded integration edges; they cannot widen filesystem, network, write, or authority scope.
+
+No derived layer, adapter, or score is a source-of-truth substitute for cited canonical evidence.
+
 ## Trust boundary
 
 The vault stays local. Agent Recall reads only `.md` files under the path supplied by the caller. It has no network client, API key, agent runtime dependency, or vault-write feature.
