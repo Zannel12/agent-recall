@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, chunk_markdown, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
+from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, chunk_markdown, follow_evidence, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
 
 
 class SearchVaultTests(unittest.TestCase):
@@ -202,6 +202,17 @@ Run the verification command.
             self.assertEqual("odd.md", hits[0].relative_path)
             self.assertEqual("[unterminated", hits[0].title)
             self.assertEqual("[unterminated", hits[0].heading)
+
+    def test_follow_evidence_returns_bounded_chunk_neighborhood(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "guide.md").write_text("# Guide\nOne.\n## Install\nTwo.\n## Verify\nThree.\n", encoding="utf-8")
+
+            chunks = follow_evidence(vault, "guide.md#guide-install", neighbor_limit=1)
+
+            self.assertEqual(["guide.md#guide", "guide.md#guide-install", "guide.md#guide-verify"], [chunk.chunk_id for chunk in chunks])
+            with self.assertRaisesRegex(Exception, "Evidence identifier"):
+                follow_evidence(vault, "../private.md#document")
 
     def test_profiled_packet_reports_budget_and_truncation(self):
         hits = [

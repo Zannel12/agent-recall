@@ -280,6 +280,32 @@ def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str,
     return sorted(hits, key=lambda hit: (-hit.score, hit.chunk_id))[:limit]
 
 
+
+def follow_evidence(vault: Path, chunk_id: str, neighbor_limit: int = 1) -> list[MarkdownChunk]:
+    """Return a bounded selected-vault chunk neighborhood by canonical chunk ID."""
+    if not 0 <= neighbor_limit <= 5:
+        raise ValueError("neighbor_limit must be between 0 and 5")
+    relative_path, marker, _ = chunk_id.partition("#")
+    if not marker or Path(relative_path).is_absolute() or ".." in Path(relative_path).parts:
+        raise RecallError("INVALID_EVIDENCE_ID", "Evidence identifier is invalid")
+    root = vault.resolve(strict=True)
+    candidate = (vault / relative_path).resolve(strict=True)
+    try:
+        candidate.relative_to(root)
+    except ValueError as error:
+        raise RecallError("INVALID_EVIDENCE_ID", "Evidence identifier is invalid") from error
+    if not candidate.is_file() or candidate.suffix != ".md" or candidate.stat().st_size > MAX_FILE_BYTES:
+        raise RecallError("EVIDENCE_NOT_FOUND", "Selected evidence is unavailable")
+    try:
+        chunks = chunk_markdown(relative_path, candidate.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError) as error:
+        raise RecallError("EVIDENCE_NOT_FOUND", "Selected evidence is unavailable") from error
+    for index, chunk in enumerate(chunks):
+        if chunk.chunk_id == chunk_id:
+            return chunks[max(0, index - neighbor_limit) : index + neighbor_limit + 1]
+    raise RecallError("EVIDENCE_NOT_FOUND", "Selected evidence is unavailable")
+
+
 def render_packet(query: str, hits: list[SearchHit], max_chars: int = MAX_OUTPUT_CHARS) -> str:
     """Render a bounded Markdown packet from cited retrieval hits."""
     if not 1 <= max_chars <= MAX_OUTPUT_CHARS:
