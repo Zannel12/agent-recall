@@ -8,6 +8,7 @@ from math import log
 from pathlib import Path
 
 _WORD_RE = re.compile(r"[\w-]{2,}", re.UNICODE)
+_HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
 
 
 @dataclass(frozen=True)
@@ -16,7 +17,18 @@ class SearchHit:
     score_components: dict[str, float]
     title: str
     relative_path: str
+    chunk_id: str
+    heading: str
     excerpt: str
+
+
+@dataclass(frozen=True)
+class MarkdownChunk:
+    source_title: str
+    relative_path: str
+    chunk_id: str
+    heading: str
+    body: str
 
 
 def normalize_text(text: str) -> str:
@@ -28,21 +40,89 @@ def _words(text: str) -> set[str]:
     return set(_WORD_RE.findall(normalize_text(text)))
 
 
+def _frontmatter(body: str) -> tuple[dict[str, str], str]:
+    if not body.startswith("---\n"):
+        return {}, body
+    closing = body.find("\n---\n", 4)
+    if closing == -1:
+        return {}, body
+    metadata: dict[str, str] = {}
+    for line in body[4:closing].splitlines():
+        key, separator, value = line.partition(":")
+        if separator:
+            metadata[key.strip().casefold()] = value.strip().strip("\"'")
+    return metadata, body[closing + 5 :]
+
+
 def _title(path: Path, body: str) -> str:
-    for line in body.splitlines()[:40]:
-        if line.startswith("# "):
-            return line[2:].strip()
+    metadata, content = _frontmatter(body)
+    if metadata.get("title"):
+        return metadata["title"]
+    for line in content.splitlines()[:40]:
+        match = _HEADING_RE.match(line)
+        if match and len(match.group(1)) == 1:
+            return match.group(2).strip()
     return path.stem
+
+
+def _slug(text: str) -> str:
+    words = _WORD_RE.findall(normalize_text(text))
+    return "-".join(words) or "section"
+
+
+def chunk_markdown(relative_path: str, body: str) -> list[MarkdownChunk]:
+    """Split Markdown into heading-aware chunks with stable source backlinks."""
+    metadata, content = _frontmatter(body)
+    source_title = metadata.get("title") or _title(Path(relative_path), body)
+    chunks: list[MarkdownChunk] = []
+    heading_stack: list[tuple[int, str]] = []
+    current_heading = source_title
+    current_lines: list[str] = []
+    has_heading = False
+    identifiers: Counter[str] = Counter()
+
+    def append_chunk() -> None:
+        nonlocal current_lines
+        if not current_lines and not has_heading:
+            return
+        base_id = f"{relative_path}#{_slug(current_heading)}"
+        identifiers[base_id] += 1
+        chunk_id = base_id if identifiers[base_id] == 1 else f"{base_id}-{identifiers[base_id]}"
+        chunks.append(MarkdownChunk(
+            source_title,
+            relative_path,
+            chunk_id,
+            current_heading,
+            "\n".join(current_lines).strip(),
+        ))
+        current_lines = []
+
+    for line in content.splitlines():
+        match = _HEADING_RE.match(line)
+        if not match:
+            current_lines.append(line)
+            continue
+        if current_lines or has_heading:
+            append_chunk()
+        level = len(match.group(1))
+        heading_text = match.group(2).strip()
+        while heading_stack and heading_stack[-1][0] >= level:
+            heading_stack.pop()
+        heading_stack.append((level, heading_text))
+        current_heading = " > ".join(text for _, text in heading_stack)
+        has_heading = True
+
+    append_chunk()
+    if not chunks:
+        chunks.append(MarkdownChunk(source_title, relative_path, f"{relative_path}#document", source_title, ""))
+    return chunks
 
 
 def _excerpt(body: str, terms: set[str], max_chars: int = 700) -> str:
     paragraphs = [part.strip() for part in re.split(r"\n\s*\n", body) if part.strip()]
-    content = [part for part in paragraphs if not re.fullmatch(r"#{1,6}\s+.+", part)]
-    if not content:
-        content = paragraphs
-    if not content:
+    if not paragraphs:
         return ""
-    selected = max(content, key=lambda part: sum(term in normalize_text(part) for term in terms))
+    selected = max(paragraphs, key=lambda part: sum(term in normalize_text(part) for term in terms))
     compact = re.sub(r"\s+", " ", selected).strip()
     return compact if len(compact) <= max_chars else compact[: max_chars - 1].rstrip() + "…"
 
@@ -84,32 +164,37 @@ def _score(
 
 
 def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
-    """Return ranked Markdown hits without exposing absolute paths."""
+    """Return ranked Markdown chunk hits without exposing absolute paths."""
     terms = _words(query)
     if not vault.is_dir():
         raise ValueError(f"Vault directory does not exist: {vault}")
-    documents: list[tuple[str, str, str, Counter[str]]] = []
+    documents: list[tuple[MarkdownChunk, Counter[str]]] = []
     for path in vault.rglob("*.md"):
         try:
             body = path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
         relative_path = path.relative_to(vault).as_posix()
-        title = _title(path, body)
-        counts = Counter(_WORD_RE.findall(normalize_text(title + "\n" + body[:20000])))
-        documents.append((relative_path, title, body, counts))
+        for chunk in chunk_markdown(relative_path, body):
+            counts = Counter(_WORD_RE.findall(normalize_text(
+                f"{chunk.source_title}\n{chunk.heading}\n{chunk.body[:20000]}"
+            )))
+            documents.append((chunk, counts))
 
     if not documents:
         return []
     document_frequency = Counter(
-        term for term in terms for _, _, _, counts in documents if counts[term]
+        term for term in terms for _, counts in documents if counts[term]
     )
-    average_document_length = sum(sum(counts.values()) for _, _, _, counts in documents) / len(documents)
+    average_document_length = max(
+        sum(sum(counts.values()) for _, counts in documents) / len(documents), 1.0
+    )
     hits: list[SearchHit] = []
-    for relative_path, title, body, counts in documents:
+    for chunk, counts in documents:
+        result_title = chunk.source_title if chunk.heading == chunk.source_title else f"{chunk.source_title} — {chunk.heading}"
         score, score_components = _score(
-            relative_path,
-            title,
+            chunk.relative_path,
+            result_title,
             counts,
             sum(counts.values()),
             average_document_length,
@@ -118,8 +203,16 @@ def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
             terms,
         )
         if score:
-            hits.append(SearchHit(score, score_components, title, relative_path, _excerpt(body, terms)))
-    return sorted(hits, key=lambda hit: (-hit.score, hit.relative_path))[:limit]
+            hits.append(SearchHit(
+                score,
+                score_components,
+                result_title,
+                chunk.relative_path,
+                chunk.chunk_id,
+                chunk.heading,
+                _excerpt(chunk.body, terms),
+            ))
+    return sorted(hits, key=lambda hit: (-hit.score, hit.chunk_id))[:limit]
 
 
 def render_packet(query: str, hits: list[SearchHit]) -> str:
@@ -136,6 +229,7 @@ def render_packet(query: str, hits: list[SearchHit]) -> str:
             f"- Score: `{hit.score}`",
             f"- Score details: {score_details}",
             f"- Source: `{hit.relative_path}`",
+            f"- Chunk: `{hit.chunk_id}`",
             "",
             hit.excerpt,
             "",

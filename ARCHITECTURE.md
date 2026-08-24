@@ -2,8 +2,9 @@
 
 ```text
 selected local Markdown vault + query
-  → lexical ranking (title, path, body)
-  → ranked hits (relative path + excerpt)
+  → frontmatter/title extraction + heading-aware chunks
+  → deterministic BM25-style sparse ranking (title, path, chunk body)
+  → cited ranked chunks (relative parent path + stable chunk ID + excerpt)
   → Markdown packet or JSON
   → calling agent decides what to use
 ```

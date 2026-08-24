@@ -3,10 +3,48 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import normalize_text, render_packet, search_vault
+from agent_recall.core import chunk_markdown, normalize_text, render_packet, search_vault
 
 
 class SearchVaultTests(unittest.TestCase):
+    def test_chunk_markdown_uses_frontmatter_headings_and_stable_parent_links(self):
+        chunks = chunk_markdown(
+            "guides/setup.md",
+            """---
+title: Agent Setup
+---
+# Setup
+Overview text.
+## Install
+Install the local tool.
+## Verify
+Run the verification command.
+""",
+        )
+
+        self.assertEqual("Agent Setup", chunks[0].source_title)
+        self.assertEqual("Setup", chunks[0].heading)
+        self.assertEqual("guides/setup.md#setup", chunks[0].chunk_id)
+        self.assertEqual("Setup > Install", chunks[1].heading)
+        self.assertEqual("guides/setup.md#setup-install", chunks[1].chunk_id)
+        self.assertEqual("guides/setup.md", chunks[1].relative_path)
+        self.assertIn("Install the local tool.", chunks[1].body)
+
+    def test_search_returns_heading_chunk_with_parent_source_link(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "guide.md").write_text(
+                "# Guide\n\nGeneral notes.\n\n## Verify\n\nRun the verification command.\n",
+                encoding="utf-8",
+            )
+
+            hit = search_vault(vault, "verification", limit=1)[0]
+
+            self.assertEqual("guide.md", hit.relative_path)
+            self.assertEqual("guide.md#guide-verify", hit.chunk_id)
+            self.assertEqual("Guide > Verify", hit.heading)
+            self.assertIn("Run the verification command.", hit.excerpt)
+
     def test_normalize_text_uses_nfc_and_casefold(self):
         self.assertEqual("café strasse", normalize_text("Cafe\u0301 STRAẞE"))
 
