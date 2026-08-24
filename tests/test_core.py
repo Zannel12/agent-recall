@@ -188,6 +188,21 @@ Run the verification command.
 
             self.assertEqual([], hits)
 
+    def test_search_handles_malformed_frontmatter_and_heading_deterministically(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "odd.md").write_text(
+                "---\ntitle: [unterminated\n---\n#Valid heading\n\nPrivacy evidence remains local.\n",
+                encoding="utf-8",
+            )
+
+            hits = search_vault(vault, "privacy")
+
+            self.assertEqual(1, len(hits))
+            self.assertEqual("odd.md", hits[0].relative_path)
+            self.assertEqual("[unterminated", hits[0].title)
+            self.assertEqual("[unterminated", hits[0].heading)
+
     def test_packet_includes_query_relative_path_and_excerpt(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)

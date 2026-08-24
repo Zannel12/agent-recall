@@ -26,8 +26,15 @@ class CliTests(unittest.TestCase):
 
             self.assertEqual(0, result.returncode, result.stderr)
             payload = json.loads(result.stdout)
+            self.assertEqual({"query", "hits", "diagnostics"}, set(payload))
             self.assertEqual("privacy", payload["query"])
+            self.assertEqual({"skipped_files": 0}, payload["diagnostics"])
+            self.assertEqual(
+                {"score", "score_components", "title", "relative_path", "chunk_id", "heading", "excerpt"},
+                set(payload["hits"][0]),
+            )
             self.assertEqual("privacy.md", payload["hits"][0]["relative_path"])
+            self.assertNotIn(str(vault), result.stdout)
     def test_cli_missing_vault_uses_stable_code_without_path_leak(self):
         missing = Path(tempfile.gettempdir()) / "agent-recall-private-missing-vault"
         result = subprocess.run(
