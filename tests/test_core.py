@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, chunk_markdown, normalize_text, render_packet, search_vault, untrusted_content
+from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, chunk_markdown, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
 
 
 class SearchVaultTests(unittest.TestCase):
@@ -202,6 +202,21 @@ Run the verification command.
             self.assertEqual("odd.md", hits[0].relative_path)
             self.assertEqual("[unterminated", hits[0].title)
             self.assertEqual("[unterminated", hits[0].heading)
+
+    def test_profiled_packet_reports_budget_and_truncation(self):
+        hits = [
+            type("Hit", (), {
+                "title": "Long", "score": 1.0, "score_components": {"bm25": 1.0},
+                "relative_path": "long.md", "chunk_id": "long.md#long", "excerpt": "x" * 3_000,
+            })()
+        ]
+
+        packet, diagnostics = render_profiled_packet("long", hits, "exact")
+
+        self.assertLessEqual(len(packet), 2_000)
+        self.assertEqual({"profile": "exact", "budget_chars": 2_000, "truncated": True}, diagnostics)
+        with self.assertRaisesRegex(ValueError, "profile"):
+            render_profiled_packet("long", hits, "unknown")
 
     def test_packet_includes_query_relative_path_and_excerpt(self):
         with tempfile.TemporaryDirectory() as directory:

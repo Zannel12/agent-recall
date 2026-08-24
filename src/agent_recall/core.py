@@ -308,3 +308,16 @@ def render_packet(query: str, hits: list[SearchHit], max_chars: int = MAX_OUTPUT
     if max_chars == 1:
         return "…"
     return packet[: max_chars - 1].rstrip() + "…"
+
+
+PROFILE_BUDGETS = {"exact": 2_000, "standard": 8_000, "deep": MAX_OUTPUT_CHARS}
+
+
+def render_profiled_packet(query: str, hits: list[SearchHit], profile: str = "standard") -> tuple[str, dict[str, object]]:
+    """Render a named deterministic budget profile with explicit truncation metadata."""
+    if profile not in PROFILE_BUDGETS:
+        raise ValueError("profile must be exact, standard, or deep")
+    budget = PROFILE_BUDGETS[profile]
+    full = render_packet(query, hits, MAX_OUTPUT_CHARS)
+    packet = render_packet(query, hits, budget)
+    return packet, {"profile": profile, "budget_chars": budget, "truncated": len(full) > budget}
