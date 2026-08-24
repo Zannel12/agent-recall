@@ -24,6 +24,20 @@ class RecallError(ValueError):
 
 
 @dataclass(frozen=True)
+class UntrustedContent:
+    body: str
+    trust: str
+    source_kind: str
+    source_id: str
+    executable: bool = False
+
+
+def untrusted_content(body: str, source_kind: str, source_id: str) -> UntrustedContent:
+    """Represent imported text as non-executable, untrusted data."""
+    return UntrustedContent(body, "untrusted", source_kind, source_id)
+
+
+@dataclass(frozen=True)
 class SearchHit:
     score: float
     score_components: dict[str, float]

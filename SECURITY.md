@@ -10,9 +10,11 @@ Agent Recall is designed to run locally and read only the selected Markdown vaul
 - API keys, tokens, passwords, private keys, browser/session data, or `.env` files;
 - machine-specific paths or agent configuration.
 
-## Untrusted imports
+## Untrusted imports and retrieved content
 
-Future memory-transfer bundles are data, not instructions. They must be quarantined, reviewed, and scanned for secrets/PII before becoming curated memory. Imported text must never trigger commands, tool calls, or settings changes.
+Future memory-transfer bundles and any text wrapped as `UntrustedContent` are data, not instructions. The structured envelope carries `trust="untrusted"`, `source_kind`, `source_id`, original body, and `executable=false`.
+
+They must be quarantined, reviewed, and scanned for secrets/PII before becoming curated memory. Imported or retrieved Markdown must never trigger commands, tool calls, settings changes, or memory promotion. Markdown rendering is a transport format, **not** a security boundary; calling agents must preserve the envelope and apply their own instruction/data separation.
 
 ## Reporting
 
