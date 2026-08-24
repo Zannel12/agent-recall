@@ -9,6 +9,10 @@ from pathlib import Path
 
 _WORD_RE = re.compile(r"[\w-]{2,}", re.UNICODE)
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
+MAX_QUERY_CHARS = 4_096
+MAX_LIMIT = 50
+MAX_FILE_BYTES = 1_048_576
+MAX_OUTPUT_CHARS = 20_000
 
 
 @dataclass(frozen=True)
@@ -166,6 +170,10 @@ def _score(
 def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
     """Return ranked Markdown chunk hits without exposing absolute paths."""
     terms = _words(query)
+    if len(query) > MAX_QUERY_CHARS:
+        raise ValueError(f"query length must not exceed {MAX_QUERY_CHARS} characters")
+    if not 1 <= limit <= MAX_LIMIT:
+        raise ValueError(f"limit must be between 1 and {MAX_LIMIT}")
     if not vault.is_dir():
         raise ValueError(f"Vault directory does not exist: {vault}")
     resolved_vault = vault.resolve(strict=True)
@@ -179,6 +187,8 @@ def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
         if not resolved_path.is_file():
             continue
         try:
+            if resolved_path.stat().st_size > MAX_FILE_BYTES:
+                continue
             body = resolved_path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
@@ -223,7 +233,10 @@ def search_vault(vault: Path, query: str, limit: int = 8) -> list[SearchHit]:
     return sorted(hits, key=lambda hit: (-hit.score, hit.chunk_id))[:limit]
 
 
-def render_packet(query: str, hits: list[SearchHit]) -> str:
+def render_packet(query: str, hits: list[SearchHit], max_chars: int = MAX_OUTPUT_CHARS) -> str:
+    """Render a bounded Markdown packet from cited retrieval hits."""
+    if not 1 <= max_chars <= MAX_OUTPUT_CHARS:
+        raise ValueError(f"max_chars must be between 1 and {MAX_OUTPUT_CHARS}")
     lines = [f"# Librarian Context Packet — {query}", "", "## Sources", ""]
     if not hits:
         lines.append("- No relevant Markdown sources were found.")
@@ -242,4 +255,9 @@ def render_packet(query: str, hits: list[SearchHit]) -> str:
             hit.excerpt,
             "",
         ])
-    return "\n".join(lines).rstrip() + "\n"
+    packet = "\n".join(lines).rstrip() + "\n"
+    if len(packet) <= max_chars:
+        return packet
+    if max_chars == 1:
+        return "…"
+    return packet[: max_chars - 1].rstrip() + "…"

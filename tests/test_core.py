@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import chunk_markdown, normalize_text, render_packet, search_vault
+from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, chunk_markdown, normalize_text, render_packet, search_vault
 
 
 class SearchVaultTests(unittest.TestCase):
@@ -100,6 +100,26 @@ Run the verification command.
             self.assertGreater(hit.score_components["title_boost"], 0)
             self.assertGreater(hit.score_components["path_boost"], 0)
             self.assertAlmostEqual(hit.score, sum(hit.score_components.values()))
+
+    def test_search_rejects_oversized_query_and_invalid_limit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            with self.assertRaisesRegex(ValueError, "query length"):
+                search_vault(vault, "q" * (MAX_QUERY_CHARS + 1))
+            with self.assertRaisesRegex(ValueError, "limit must"):
+                search_vault(vault, "valid", limit=0)
+
+    def test_search_skips_oversized_markdown_file(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "large.md").write_text("# Large\n\n" + "oversized-secret " * (MAX_FILE_BYTES // 10), encoding="utf-8")
+
+            self.assertEqual([], search_vault(vault, "oversized-secret"))
+
+    def test_packet_has_a_deterministic_output_budget(self):
+        packet = render_packet("query", [], max_chars=32)
+
+        self.assertLessEqual(len(packet), 32)
 
     def test_search_skips_markdown_symlink_that_resolves_outside_vault(self):
         with tempfile.TemporaryDirectory() as directory, tempfile.TemporaryDirectory() as outside_directory:
