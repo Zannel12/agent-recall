@@ -1,0 +1,15 @@
+{
+  "corpus": {
+    "file_count": 1000,
+    "synthetic": true
+  },
+  "query": "synthetic retrieval target",
+  "latency_ms": 601.056,
+  "peak_memory_bytes": 1810537,
+  "quality": {
+    "target_path": "notes/note-0420.md",
+    "retrieved": true
+  },
+  "production_index": false,
+  "measurement_note": "Observed on 2026-08-24; latency and memory are environment observations, not universal acceptance thresholds."
+}
