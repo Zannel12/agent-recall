@@ -6,8 +6,29 @@ build-backend = "setuptools.build_meta"
 name = "agent-recall"
 version = "0.1.0"
 description = "Cited, scoped retrieval from local Markdown vaults for AI agents."
+readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
+authors = [{name = "Cited Vault Recall contributors"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Indexing",
+]
+keywords = ["local-first", "markdown", "privacy", "retrieval"]
+
+[project.urls]
+Homepage = "https://github.com/Zannel12/agent-recall"
+Source = "https://github.com/Zannel12/agent-recall"
+Issues = "https://github.com/Zannel12/agent-recall/issues"
+Security = "https://github.com/Zannel12/agent-recall/security/advisories/new"
 
 [project.scripts]
 agent-recall = "agent_recall.cli:main"
