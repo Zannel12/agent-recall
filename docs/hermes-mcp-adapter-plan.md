@@ -50,3 +50,13 @@ agent-recall <caller-selected-vault> <query> --format json
 The CLI and MCP search schema share the core result bound: `1`–`50` hits.
 
 No config is automatically applied, and this plan does not demonstrate that Hermes has loaded or can run Agent Recall.
+
+## Evidence levels
+
+### Synthetic MCP protocol E2E (required)
+
+`tests/test_mcp_protocol_e2e.py` is a required repository test. It creates a temporary synthetic Markdown vault, starts the local stdio server directly, and verifies the JSON-RPC `tools/list`, bounded `tools/call` search, and identifier-scoped `resources/read` flow. This demonstrates the Agent Recall protocol only; it does not start, inspect, configure, authenticate, or connect a Hermes host.
+
+### Real Hermes verification (manual opt-in)
+
+Real Hermes verification is not a repository test and is never triggered by CI. It may occur only under a separately approved, owner-controlled procedure using a synthetic vault and a reviewed non-executing plan. The procedure must not infer success from host documentation or apply configuration automatically. No real Hermes host was configured or connected while producing this evidence.

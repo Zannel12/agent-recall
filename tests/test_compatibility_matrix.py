@@ -13,7 +13,8 @@ class CompatibilityMatrixTests(unittest.TestCase):
             self.assertIn(host, text)
         for field in ("Supported mode", "Data location", "Permission surface", "Test status"):
             self.assertIn(field, text)
-        self.assertEqual(5, text.count("Not integration-tested"))
+        self.assertEqual(4, text.count("Not integration-tested"))
+        self.assertIn("Synthetic MCP protocol E2E; real Hermes not integration-tested", text)
         self.assertIn("Local tests only", text)
         self.assertIn("https://developers.openai.com/codex/mcp", text)
         self.assertIn("https://docs.anthropic.com/en/docs/claude-code/mcp", text)
