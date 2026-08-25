@@ -1,5 +1,8 @@
 # Agent Recall
 
+[![Tests](https://github.com/Zannel12/agent-recall/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Zannel12/agent-recall/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 **Cited, scoped memory from a local Markdown vault for AI agents.**
 
 Agent Recall searches a vault you select and returns ranked excerpts with relative source paths. It is read-only, local-first, offline by default, and does not send the whole vault to an agent.
@@ -57,4 +60,12 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 
 ## Status
 
-`v0.1.0` public release. See [CHANGELOG.md](CHANGELOG.md) for the released scope and explicit exclusions. No real vault or personal data belongs in this repository.
+`v0.1.0` is the current package version. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
+
+## Evidence and current limits
+
+- **Local CLI:** covered by the public Python 3.11/3.12 test workflow, including an installed-package demo.
+- **Retrieval evaluation:** versioned synthetic retrieval, exact-date, and abstention scenarios are documented in [benchmarks/evaluation](benchmarks/evaluation/README.md).
+- **Host support:** the public compatibility matrix distinguishes local tests from hosts that are **not integration-tested**: [compatibility](docs/compatibility.md).
+- **Hermes MCP:** only a non-mutating, caller-supplied configuration-plan contract exists; no Hermes host is configured or connected: [adapter plan](docs/hermes-mcp-adapter-plan.md).
+- **Release evidence:** GitHub-only release requirements are documented in [release provenance](docs/release-provenance.md). No GitHub Release, package registry publication, SBOM, or provenance attestation has been created yet.

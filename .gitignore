@@ -11,3 +11,7 @@ venv/
 .vscode/
 build/
 dist/
+
+# Local agent/tool state; never publish operational artifacts.
+.grapify/
+.hermes/
