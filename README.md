@@ -60,7 +60,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 
 ## Status
 
-`v0.1.0` is the current package version. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
+`0.2.0.dev0` is the current development package version for the unreleased `0.2.0` scope. No GitHub Release or tag exists for it. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
 
 ## Evidence and current limits
 

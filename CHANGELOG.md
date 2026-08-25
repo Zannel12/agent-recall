@@ -2,6 +2,30 @@
 
 All notable changes to Agent Recall are documented here.
 
+## [0.2.0] — Unreleased
+
+This scope is represented by package version `0.2.0.dev0`. It is **not** a GitHub Release or tag and has not been published to a package registry.
+
+### Added
+
+- Local stdio MCP entry point: `agent-recall-mcp --vault <vault>`, with a bounded `search` tool and identifier-scoped evidence reads.
+- Explicit CLI operations for `doctor` and `reindex`, plus a canonical positional search contract: `agent-recall <vault> <query>`.
+- A pure, non-executing Hermes MCP configuration-plan generator; no real Hermes configuration or host connection is included.
+- Derived-index integrity checks, explicit lifecycle/permission boundaries, aggregate diagnostics, and synthetic retrieval evaluation fixtures.
+- Installation, built-distribution, MCP-entry-point, public-command-contract, Python 3.10 compatibility, and clean end-to-end smoke tests.
+- Public contribution surface: code of conduct, issue/PR templates, contributor privacy guidance, and local tool-state ignore rules.
+- GitHub Actions coverage for Python 3.10–3.13 and a separate clean-install smoke job.
+
+### Changed
+
+- MCP, CLI, core, and public documentation share a `1`–`50` result-limit contract.
+- The package metadata now declares the current unreleased development version as `0.2.0.dev0`.
+
+### Still not a release
+
+- No GitHub Release, tag, registry publication, SBOM, provenance attestation, or release artifact has been created.
+- Host integrations remain bounded and unproven beyond synthetic/local tests; the compatibility matrix does not claim host integration certification.
+
 ## [0.1.0] — 2026-08-21
 
 ### Added
