@@ -47,7 +47,7 @@ agent-recall doctor --config recall.json --json
 
 ## Agent integration
 
-Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (vault + query) and one output (source-linked context packet). For a copyable handoff to another coding/AI agent, use **[examples/agent-brief.md](examples/agent-brief.md)**.
+Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (vault + query) and one output (source-linked context packet). For an isolated local install for an autonomous agent, follow the **[standalone installation guide](docs/autonomous-agent-installation.md)**. For a copyable handoff to another coding/AI agent, use **[examples/agent-brief.md](examples/agent-brief.md)**.
 
 ## Trust and provenance
 
@@ -64,7 +64,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 
 ## Evidence and current limits
 
-- **Local CLI:** covered by the public Python 3.11/3.12 test workflow, including an installed-package demo.
+- **Local CLI:** covered by the public Python 3.10–3.13 test workflow, including an installed-package demo and a separate clean-install smoke job.
 - **Retrieval evaluation:** versioned synthetic retrieval, exact-date, and abstention scenarios are documented in [benchmarks/evaluation](benchmarks/evaluation/README.md).
 - **Host support:** the public compatibility matrix distinguishes local tests from hosts that are **not integration-tested**: [compatibility](docs/compatibility.md).
 - **Hermes MCP:** only a non-mutating, caller-supplied configuration-plan contract exists; no Hermes host is configured or connected: [adapter plan](docs/hermes-mcp-adapter-plan.md).
