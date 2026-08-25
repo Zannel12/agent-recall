@@ -49,7 +49,7 @@ def build_hermes_mcp_plan(
     consent: bool,
 ) -> HermesMcpPlan:
     """Return a non-executing plan from explicit caller-provided observations."""
-    fallback = ("agent-recall", "search", "--vault", str(vault_path))
+    fallback = ("agent-recall", str(vault_path))
     entry = _config_entry(vault_path)
     if not consent:
         return HermesMcpPlan(PlanStatus.CONSENT_REQUIRED, entry, (), fallback)

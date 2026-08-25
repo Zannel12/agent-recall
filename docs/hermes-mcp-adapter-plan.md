@@ -44,7 +44,7 @@ The `commands` field is a tuple of argument vectors, not shell text. It contains
 Every outcome exposes the deterministic non-host fallback:
 
 ```text
-agent-recall search --vault <caller-selected-vault>
+agent-recall <caller-selected-vault> <query> --format json
 ```
 
 No config is automatically applied, and this plan does not demonstrate that Hermes has loaded or can run Agent Recall.

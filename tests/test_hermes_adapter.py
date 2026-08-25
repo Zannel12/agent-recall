@@ -1,7 +1,16 @@
 from __future__ import annotations
 
+import json
+import os
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
+
+
+ROOT = Path(__file__).parents[1]
+DEMO_VAULT = ROOT / "examples" / "demo-vault"
 
 from agent_recall.hermes_adapter import PlanStatus, build_hermes_mcp_plan
 
@@ -24,7 +33,7 @@ class HermesAdapterPlanTests(unittest.TestCase):
 
         self.assertEqual(plan.status, PlanStatus.CONSENT_REQUIRED)
         self.assertEqual(plan.commands, ())
-        self.assertEqual(plan.cli_fallback, ("agent-recall", "search", "--vault", str(self.vault)))
+        self.assertEqual(plan.cli_fallback, ("agent-recall", str(self.vault)))
 
     def test_plan_is_apply_ready_only_with_distinct_backup_and_no_collision(self):
         plan = build_hermes_mcp_plan(
@@ -82,6 +91,40 @@ class HermesAdapterPlanTests(unittest.TestCase):
 
         self.assertEqual(plan.status, PlanStatus.INVALID_BACKUP)
         self.assertEqual(plan.commands, ())
+
+    def test_generated_cli_fallback_runs_in_an_isolated_editable_install(self):
+        plan = build_hermes_mcp_plan(
+            config_path=self.config,
+            backup_path=self.backup,
+            vault_path=DEMO_VAULT,
+            observed_server_names=set(),
+            config_exists=True,
+            consent=True,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            venv = Path(directory) / "venv"
+            subprocess.run([sys.executable, "-m", "venv", str(venv)], check=True, capture_output=True, text=True)
+            scripts = venv / ("Scripts" if sys.platform == "win32" else "bin")
+            python = scripts / ("python.exe" if sys.platform == "win32" else "python")
+            subprocess.run(
+                [str(python), "-m", "pip", "install", "--no-deps", "-e", str(ROOT)],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=60,
+            )
+            environment = {**os.environ, "PATH": str(scripts) + os.pathsep + os.environ.get("PATH", "")}
+            result = subprocess.run(
+                plan.cli_fallback + ("privacy", "--format", "json"),
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=15,
+                env=environment,
+            )
+        payload = json.loads(result.stdout)
+        self.assertEqual("privacy", payload["query"])
+        self.assertTrue(payload["hits"])
 
 
 if __name__ == "__main__":
