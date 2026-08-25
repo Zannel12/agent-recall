@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "dataset": "synthetic-evaluation-v1",
+  "retriever": "lexical-v0.1.0",
+  "scenarios": [
+    {"kind": "retrieval", "id": "privacy", "query": "privacy boundary", "k": 1, "relevant_paths": ["privacy.md"]},
+    {"kind": "temporal", "id": "explicit-date", "query": "policy 2025", "k": 1, "relevant_paths": ["policy-2025.md"]},
+    {"kind": "abstention", "id": "no-evidence", "query": "xylophonic-zebra", "k": 3, "relevant_paths": []}
+  ]
+}
