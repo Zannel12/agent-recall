@@ -1,0 +1,88 @@
+from __future__ import annotations
+
+import unittest
+from pathlib import Path
+
+from agent_recall.hermes_adapter import PlanStatus, build_hermes_mcp_plan
+
+
+class HermesAdapterPlanTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.config = Path("/synthetic/hermes-config.yaml")
+        self.backup = Path("/synthetic/hermes-config.yaml.agent-recall.bak")
+        self.vault = Path("/synthetic/vault")
+
+    def test_plan_requires_explicit_consent_before_emitting_commands(self):
+        plan = build_hermes_mcp_plan(
+            config_path=self.config,
+            backup_path=self.backup,
+            vault_path=self.vault,
+            observed_server_names=set(),
+            config_exists=True,
+            consent=False,
+        )
+
+        self.assertEqual(plan.status, PlanStatus.CONSENT_REQUIRED)
+        self.assertEqual(plan.commands, ())
+        self.assertEqual(plan.cli_fallback, ("agent-recall", "search", "--vault", str(self.vault)))
+
+    def test_plan_is_apply_ready_only_with_distinct_backup_and_no_collision(self):
+        plan = build_hermes_mcp_plan(
+            config_path=self.config,
+            backup_path=self.backup,
+            vault_path=self.vault,
+            observed_server_names={"other-server"},
+            config_exists=True,
+            consent=True,
+        )
+
+        self.assertEqual(plan.status, PlanStatus.READY)
+        self.assertEqual(plan.config_entry["command"], "agent-recall-mcp")
+        self.assertEqual(plan.config_entry["args"], ["--vault", str(self.vault)])
+        self.assertEqual(plan.config_entry["tools"], {"include": ["search"]})
+        self.assertEqual(plan.config_entry["sampling"], {"enabled": False})
+        self.assertEqual(plan.commands[0], ("cp", "--", str(self.config), str(self.backup)))
+        self.assertIn(("hermes", "mcp", "remove", "agent-recall"), plan.commands)
+
+    def test_existing_agent_recall_server_is_a_hard_collision(self):
+        plan = build_hermes_mcp_plan(
+            config_path=self.config,
+            backup_path=self.backup,
+            vault_path=self.vault,
+            observed_server_names={"agent-recall"},
+            config_exists=True,
+            consent=True,
+        )
+
+        self.assertEqual(plan.status, PlanStatus.NAME_COLLISION)
+        self.assertEqual(plan.commands, ())
+
+    def test_missing_config_observation_is_non_executing(self):
+        plan = build_hermes_mcp_plan(
+            config_path=self.config,
+            backup_path=self.backup,
+            vault_path=self.vault,
+            observed_server_names=set(),
+            config_exists=False,
+            consent=True,
+        )
+
+        self.assertEqual(plan.status, PlanStatus.CONFIG_MISSING)
+        self.assertEqual(plan.commands, ())
+
+    def test_same_config_and_backup_paths_are_rejected(self):
+        plan = build_hermes_mcp_plan(
+            config_path=self.config,
+            backup_path=self.config,
+            vault_path=self.vault,
+            observed_server_names=set(),
+            config_exists=True,
+            consent=True,
+        )
+
+        self.assertEqual(plan.status, PlanStatus.INVALID_BACKUP)
+        self.assertEqual(plan.commands, ())
+
+
+if __name__ == "__main__":
+    unittest.main()
