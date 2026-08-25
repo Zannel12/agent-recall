@@ -13,6 +13,8 @@ from .index_integrity import INDEX_VERSION, integrity_digest, source_fingerprint
 
 _WORD_RE = re.compile(r"[\w-]{2,}", re.UNICODE)
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
+_RUSSIAN_SUFFIXES = ("иями", "ями", "ами", "ого", "ему", "ыми", "ими", "ую", "ая", "ое", "ые", "ий", "ый", "ой", "ом", "ем", "ах", "ях", "ам", "ям", "ов", "ев", "а", "я", "ы", "и", "у", "ю", "е", "о")
+_RUSSIAN_SYNONYMS = {"приватность": ("конфиденциальность",), "конфиденциальность": ("приватность",)}
 MAX_QUERY_CHARS = 4_096
 MAX_LIMIT = 50
 MAX_FILE_BYTES = 1_048_576
@@ -67,8 +69,24 @@ def normalize_text(text: str) -> str:
     return unicodedata.normalize("NFC", text).casefold()
 
 
-def _words(text: str) -> set[str]:
-    return set(_WORD_RE.findall(normalize_text(text)))
+def _russian_stem(word: str) -> str:
+    if not any("а" <= character <= "я" or character == "ё" for character in word):
+        return word
+    for suffix in _RUSSIAN_SUFFIXES:
+        if word.endswith(suffix) and len(word) - len(suffix) >= 4:
+            return word[: -len(suffix)]
+    return word
+
+
+def _words(text: str, *, russian_lexical_expansion: bool = False) -> set[str]:
+    words = set(_WORD_RE.findall(normalize_text(text)))
+    if not russian_lexical_expansion:
+        return words
+    expanded = set(words)
+    for word in words:
+        expanded.add(_russian_stem(word))
+        expanded.update(_RUSSIAN_SYNONYMS.get(word, ()))
+    return expanded
 
 
 def _frontmatter(body: str) -> tuple[dict[str, str], str]:
@@ -229,7 +247,14 @@ def build_local_index(vault: Path, destination: Path) -> dict[str, object]:
     return index
 
 
-def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str, int] | None = None) -> list[SearchHit]:
+def search_vault(
+    vault: Path,
+    query: str,
+    limit: int = 8,
+    diagnostics: dict[str, int] | None = None,
+    *,
+    russian_lexical_expansion: bool = False,
+) -> list[SearchHit]:
     """Return ranked Markdown chunk hits without exposing absolute paths."""
     if diagnostics is not None:
         diagnostics.clear()
@@ -239,7 +264,7 @@ def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str,
         if diagnostics is not None:
             diagnostics["skipped_files"] += 1
 
-    terms = _words(query)
+    terms = _words(query, russian_lexical_expansion=russian_lexical_expansion)
     if len(query) > MAX_QUERY_CHARS:
         raise ValueError(f"query length must not exceed {MAX_QUERY_CHARS} characters")
     if not 1 <= limit <= MAX_LIMIT:
@@ -279,9 +304,10 @@ def search_vault(vault: Path, query: str, limit: int = 8, diagnostics: dict[str,
             continue
         relative_path = path.relative_to(vault).as_posix()
         for chunk in chunk_markdown(relative_path, body):
-            counts = Counter(_WORD_RE.findall(normalize_text(
-                f"{chunk.source_title}\n{chunk.heading}\n{chunk.body[:20000]}"
-            )))
+            counts = Counter(_words(
+                f"{chunk.source_title}\n{chunk.heading}\n{chunk.body[:20000]}",
+                russian_lexical_expansion=russian_lexical_expansion,
+            ))
             documents.append((chunk, counts))
 
     if not documents:

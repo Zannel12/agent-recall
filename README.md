@@ -20,6 +20,8 @@ JSON for an integration:
 
 ```bash
 agent-recall examples/demo-vault "privacy" --format json
+# Optional, deterministic Russian morphology/synonym expansion:
+agent-recall examples/demo-vault "локальную память" --format json --russian-lexical-expansion
 ```
 
 ## Local configuration and doctor

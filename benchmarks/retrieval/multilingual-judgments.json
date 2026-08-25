@@ -1,0 +1,8 @@
+{
+  "dataset": "synthetic-russian-lexical-v1",
+  "queries": [
+    {"id": "exact", "query": "конфиденциальность", "k": 1, "relevant_paths": ["russian/confidentiality.md"]},
+    {"id": "morphology", "query": "локальную", "k": 1, "relevant_paths": ["russian/pamyat.md"]},
+    {"id": "synonym", "query": "приватность", "k": 1, "relevant_paths": ["russian/confidentiality.md"]}
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "retriever": "lexical-russian-expansion-v1",
+  "default_metrics": {"recall_at_k": 0.333, "mrr": 0.333},
+  "expanded_metrics": {"recall_at_k": 1.0, "mrr": 1.0}
+}

@@ -107,10 +107,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("query", help="Search query")
     parser.add_argument("--limit", type=int, default=8, help=f"Maximum hits (1-{MAX_LIMIT}, default: 8)")
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
+    parser.add_argument("--russian-lexical-expansion", action="store_true", help="Opt in to deterministic Russian lexical expansion")
     args = parser.parse_args(argv)
     diagnostics: dict[str, int] = {}
     try:
-        hits = search_vault(args.vault, args.query, args.limit, diagnostics)
+        hits = search_vault(args.vault, args.query, args.limit, diagnostics, russian_lexical_expansion=args.russian_lexical_expansion)
     except ValueError as error:
         code = error.code if isinstance(error, RecallError) else "INVALID_ARGUMENT"
         parser.error(f"{code}: {error}")
