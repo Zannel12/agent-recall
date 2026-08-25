@@ -3,8 +3,35 @@
   "dataset": "synthetic-evaluation-v1",
   "retriever": "lexical-v0.1.0",
   "scenarios": [
-    {"kind": "retrieval", "id": "privacy", "query": "privacy boundary", "k": 1, "relevant_paths": ["privacy.md"]},
-    {"kind": "temporal", "id": "explicit-date", "query": "policy 2025", "k": 1, "relevant_paths": ["policy-2025.md"]},
-    {"kind": "abstention", "id": "no-evidence", "query": "xylophonic-zebra", "k": 3, "relevant_paths": []}
+    {
+      "kind": "retrieval",
+      "id": "privacy",
+      "query": "privacy boundary",
+      "k": 1,
+      "top_n": 1,
+      "relevant_paths": ["privacy.md"]
+    },
+    {
+      "kind": "retrieval",
+      "id": "policy-history",
+      "query": "policy history",
+      "k": 2,
+      "top_n": 2,
+      "relevant_paths": ["policy-2024.md", "policy-2025.md"]
+    },
+    {
+      "kind": "temporal",
+      "id": "explicit-date",
+      "query": "policy 2025",
+      "k": 1,
+      "relevant_paths": ["policy-2025.md"]
+    },
+    {
+      "kind": "abstention",
+      "id": "no-evidence",
+      "query": "xylophonic-zebra",
+      "k": 3,
+      "relevant_paths": []
+    }
   ]
 }

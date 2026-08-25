@@ -4,11 +4,11 @@ This checked-in suite is synthetic and local-only. It does not discover or inspe
 
 ## Scenarios and metrics
 
-- **Retrieval:** Recall@k and MRR over judged synthetic source paths.
+- **Retrieval:** Recall@k, MRR, and an explicit top-N hit rate over judged synthetic source paths. Every retrieval scenario declares `k` and `top_n`; `top_n` must be within `1..k` and is evaluated against the ranked result prefix, not inferred from an implementation default.
 - **Temporal:** exact-date accuracy where the query and relevant synthetic Markdown contain the same explicit date token. This is lexical evidence only; it does not claim recency or currentness reasoning.
 - **Abstention:** accuracy for an expected no-hit query. A no-hit result is evaluation behavior, not proof that a real vault lacks a fact.
 
-`scenarios.json` has schema version `1.0`. `run_evaluation(...)` returns fixture/retriever labels, per-scenario result paths, and aggregate metrics.
+`scenarios.json` and `baseline.json` have schema version `1.0`. `baseline.json` is the checked-in metric reference for this exact synthetic fixture—not a general quality target. `run_evaluation(...)` returns fixture/retriever labels, per-scenario result paths, and aggregate metrics.
 
 ## Change decision gate
 

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
+from typing import cast
 
 from agent_recall.evaluation import compare_metrics, run_evaluation
 
@@ -16,14 +18,12 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(result["schema_version"], "1.0")
         self.assertEqual(result["dataset"], "synthetic-evaluation-v1")
         self.assertEqual(result["retriever"], "lexical-v0.1.0")
-        self.assertEqual(
-            result["metrics"],
-            {"retrieval_recall_at_k": 1.0, "retrieval_mrr": 1.0, "temporal_accuracy": 1.0, "abstention_accuracy": 1.0},
-        )
-        self.assertEqual(["retrieval", "temporal", "abstention"], [item["kind"] for item in result["scenarios"]])
+        baseline = json.loads((ROOT / "baseline.json").read_text(encoding="utf-8"))
+        self.assertEqual(result["metrics"], baseline["metrics"])
+        self.assertEqual(["retrieval", "retrieval", "temporal", "abstention"], [item["kind"] for item in cast(list[dict[str, object]], result["scenarios"])])
 
     def test_comparison_requires_non_regression_and_strict_target_improvement(self):
-        baseline = {"retrieval_recall_at_k": 0.8, "retrieval_mrr": 0.7, "temporal_accuracy": 0.6, "abstention_accuracy": 0.9}
+        baseline = {"retrieval_recall_at_k": 0.8, "retrieval_mrr": 0.7, "retrieval_top_n_hit_rate": 0.7, "temporal_accuracy": 0.6, "abstention_accuracy": 0.9}
         equal = compare_metrics(baseline, baseline, target_metric="retrieval_mrr")
         improved = compare_metrics(baseline, {**baseline, "retrieval_mrr": 0.8}, target_metric="retrieval_mrr")
         regressed = compare_metrics(baseline, {**baseline, "temporal_accuracy": 0.5, "retrieval_mrr": 0.8}, target_metric="retrieval_mrr")

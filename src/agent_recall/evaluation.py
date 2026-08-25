@@ -8,7 +8,7 @@ from pathlib import Path
 from .core import search_vault
 
 
-METRICS = ("retrieval_recall_at_k", "retrieval_mrr", "temporal_accuracy", "abstention_accuracy")
+METRICS = ("retrieval_recall_at_k", "retrieval_mrr", "retrieval_top_n_hit_rate", "temporal_accuracy", "abstention_accuracy")
 
 
 def run_evaluation(root: Path) -> dict[str, object]:
@@ -16,7 +16,7 @@ def run_evaluation(root: Path) -> dict[str, object]:
     fixture = json.loads((root / "scenarios.json").read_text(encoding="utf-8"))
     scenarios: list[dict[str, object]] = fixture["scenarios"]
     results: list[dict[str, object]] = []
-    retrieval_recall = retrieval_mrr = temporal = abstention = 0.0
+    retrieval_recall = retrieval_mrr = retrieval_top_n = temporal = abstention = 0.0
     retrieval_count = temporal_count = abstention_count = 0
 
     for scenario in scenarios:
@@ -25,9 +25,16 @@ def run_evaluation(root: Path) -> dict[str, object]:
         relevant = set(scenario["relevant_paths"])
         kind = str(scenario["kind"])
         passed = False
+        top_n = 0
+        top_n_hit = False
         if kind == "retrieval":
+            top_n = int(str(scenario["top_n"]))
+            if not 1 <= top_n <= int(str(scenario["k"])):
+                raise ValueError("retrieval top_n must be between 1 and k")
             retrieval_count += 1
             retrieval_recall += len(relevant.intersection(paths)) / len(relevant)
+            top_n_hit = bool(relevant.intersection(paths[:top_n]))
+            retrieval_top_n += float(top_n_hit)
             for rank, path in enumerate(paths, 1):
                 if path in relevant:
                     retrieval_mrr += 1 / rank
@@ -43,11 +50,15 @@ def run_evaluation(root: Path) -> dict[str, object]:
             abstention += float(passed)
         else:
             raise ValueError(f"unsupported scenario kind: {kind}")
-        results.append({"id": scenario["id"], "kind": kind, "passed": passed, "paths": paths})
+        result = {"id": scenario["id"], "kind": kind, "passed": passed, "paths": paths}
+        if kind == "retrieval":
+            result.update({"top_n": top_n, "top_n_hit": top_n_hit})
+        results.append(result)
 
     metrics = {
         "retrieval_recall_at_k": round(retrieval_recall / retrieval_count, 3),
         "retrieval_mrr": round(retrieval_mrr / retrieval_count, 3),
+        "retrieval_top_n_hit_rate": round(retrieval_top_n / retrieval_count, 3),
         "temporal_accuracy": round(temporal / temporal_count, 3),
         "abstention_accuracy": round(abstention / abstention_count, 3),
     }

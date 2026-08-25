@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "dataset": "synthetic-evaluation-v1",
+  "retriever": "lexical-v0.1.0",
+  "metrics": {
+    "retrieval_recall_at_k": 1.0,
+    "retrieval_mrr": 1.0,
+    "retrieval_top_n_hit_rate": 1.0,
+    "temporal_accuracy": 1.0,
+    "abstention_accuracy": 1.0
+  }
+}
