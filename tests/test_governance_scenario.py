@@ -6,6 +6,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from typing import cast
 
 from agent_recall.cli import main
 from agent_recall.lifecycle import CorrectionRequest, LifecycleAction
@@ -38,7 +39,12 @@ class GovernanceScenarioTests(unittest.TestCase):
             self.assertNotIn(str(vault), output.getvalue())
             hit = packet["hits"][0]
 
-            evidence = McpSearch(vault).read(hit["chunk_id"])
+            mcp = McpSearch(vault)
+            mcp_search = mcp.call({"query": "explicit vault", "limit": 1})
+            mcp_hits = cast(list[object], mcp_search["hits"])
+            self.assertEqual(1, len(mcp_hits))
+            self.assertNotIn(str(vault), json.dumps(mcp_search))
+            evidence = mcp.read(hit["chunk_id"])
             self.assertEqual("governance.md", evidence["relative_path"])
             self.assertNotIn(str(vault), json.dumps(evidence))
 
