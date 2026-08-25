@@ -47,4 +47,6 @@ Every outcome exposes the deterministic non-host fallback:
 agent-recall <caller-selected-vault> <query> --format json
 ```
 
+The CLI and MCP search schema share the core result bound: `1`–`50` hits.
+
 No config is automatically applied, and this plan does not demonstrate that Hermes has loaded or can run Agent Recall.

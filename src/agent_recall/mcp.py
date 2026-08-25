@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import TextIO
 
-from .core import RecallError, follow_evidence, search_vault
+from .core import MAX_LIMIT, RecallError, follow_evidence, search_vault
 
 
 class McpSearch:
@@ -81,7 +81,7 @@ def tools_list() -> dict[str, object]:
                     "required": ["query"],
                     "properties": {
                         "query": {"type": "string", "minLength": 1, "maxLength": 4096},
-                        "limit": {"type": "integer", "minimum": 1, "maximum": 100},
+                        "limit": {"type": "integer", "minimum": 1, "maximum": MAX_LIMIT},
                     },
                 },
             }

@@ -5,7 +5,9 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from typing import cast
 
+from agent_recall.core import MAX_LIMIT
 from agent_recall.mcp import McpSearch, handle_request, serve, tools_list
 
 
@@ -60,6 +62,15 @@ class McpContractTests(unittest.TestCase):
         schema = response["tools"][0]["inputSchema"]
         self.assertFalse(schema["additionalProperties"])
         self.assertEqual({"query"}, set(schema["required"]))
+
+    def test_mcp_schema_and_runtime_share_core_result_limit(self):
+        listing = cast(dict[str, list[dict[str, object]]], tools_list())
+        schema = cast(dict[str, object], listing["tools"][0]["inputSchema"])
+        properties = cast(dict[str, dict[str, int]], schema["properties"])
+        self.assertEqual(MAX_LIMIT, properties["limit"]["maximum"])
+        with tempfile.TemporaryDirectory() as directory:
+            response = McpSearch(Path(directory)).call({"query": "privacy", "limit": MAX_LIMIT + 1})
+        self.assertEqual("INVALID_ARGUMENT", response["code"])
 
 
 if __name__ == "__main__":

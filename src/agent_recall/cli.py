@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import cast
 
-from .core import RecallError, build_local_index, render_packet, search_vault
+from .core import MAX_LIMIT, RecallError, build_local_index, render_packet, search_vault
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -52,7 +52,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Create cited context packets from a local Markdown vault.")
     parser.add_argument("vault", type=Path, help="Local Markdown vault directory")
     parser.add_argument("query", help="Search query")
-    parser.add_argument("--limit", type=int, default=8, help="Maximum hits (default: 8)")
+    parser.add_argument("--limit", type=int, default=8, help=f"Maximum hits (1-{MAX_LIMIT}, default: 8)")
     parser.add_argument("--format", choices=("markdown", "json"), default="markdown")
     args = parser.parse_args(argv)
     diagnostics: dict[str, int] = {}
