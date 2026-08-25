@@ -35,7 +35,7 @@ agent-recall doctor --config recall.json --json
 # or: agent-recall doctor --vault /absolute/path/to/your/vault --json
 ```
 
-`doctor --json` reports only install health, explicit vault accessibility, and whether discovery occurred (`false`). It does not search parent directories, home directories, or agent state.
+`doctor --json` reports a bounded `READY`/`NOT_READY` status plus stable codes for the local executable, explicit vault readability, ignore policy, and a local search probe. It reports only aggregate counts, does not search parent directories, home directories, or agent state, and never exposes an absolute vault path.
 
 ## What it does / does not do
 

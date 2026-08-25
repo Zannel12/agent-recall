@@ -12,7 +12,7 @@ python -m pip install .
 agent-recall doctor --vault /absolute/path/to/vault --json
 ```
 
-The doctor command must report `install.ok: true`, `vault.accessible: true`, and `local_state.discovered: false`.
+The doctor command must report `status: "READY"`, `install.code: "READY"`, `vault.code: "READY"`, `search.code: "READY"`, and `local_state.discovered: false`. It reports aggregate readiness only and never prints the supplied absolute vault path.
 
 ## Windows PowerShell (documented, not executed in this Linux CI)
 

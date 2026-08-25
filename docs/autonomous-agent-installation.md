@@ -26,7 +26,7 @@ Replace the placeholder with the one approved vault path:
 agent-recall doctor --vault /absolute/path/to/markdown-vault --json
 ```
 
-Proceed only when the JSON report says the installation is healthy, the supplied vault is accessible, and discovery is `false`. A failed doctor check is a stop condition: do not substitute another path and do not broaden the agent's filesystem scope.
+Proceed only when the JSON report has `status: "READY"` with `install`, `vault`, `ignore`, and `search` checks marked `READY`, and discovery is `false`. A failed doctor check is a stop condition: do not substitute another path and do not broaden the agent's filesystem scope.
 
 ## CLI retrieval contract
 
