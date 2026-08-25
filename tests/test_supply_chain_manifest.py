@@ -12,6 +12,7 @@ ROOT = Path(__file__).parents[1]
 SCRIPT = ROOT / "tools" / "verify_supply_chain_manifest.py"
 
 
+@unittest.skipUnless(sys.version_info >= (3, 11), "supply-chain verifier requires Python 3.11+ tomllib")
 class SupplyChainManifestTests(unittest.TestCase):
     def test_checked_in_inventory_is_current_and_describes_unpinned_baseline_honestly(self):
         manifest = ROOT / "supply-chain-manifest.json"
