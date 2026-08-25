@@ -57,6 +57,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - Original vs adapted work: [ADAPTATIONS.md](ADAPTATIONS.md)
 - Upstreams and licenses: [UPSTREAMS.md](UPSTREAMS.md)
 - Security and privacy: [SECURITY.md](SECURITY.md)
+- Offline dependency/action declaration inventory: [supply-chain inventory](docs/supply-chain-inventory.md)
 - Planned memory transfer protocol: [MEMORY-TRANSFER.md](MEMORY-TRANSFER.md)
 - Dense retrieval decision: [ADR-0001](docs/adr/0001-defer-optional-dense-retrieval.md)
 

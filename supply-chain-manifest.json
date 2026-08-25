@@ -1,0 +1,53 @@
+{
+  "kind": "declaration_inventory",
+  "limitations": [
+    "not a lockfile",
+    "not an SBOM",
+    "not a provenance attestation",
+    "offline declaration inventory only"
+  ],
+  "project": {
+    "build_requirements": [
+      {
+        "classification": "version_range_unpinned",
+        "requirement": "setuptools>=68"
+      }
+    ],
+    "optional_dependencies": [],
+    "runtime_dependencies": []
+  },
+  "schema_version": "1.0",
+  "workflows": [
+    {
+      "literal_package_installs": [
+        {
+          "classification": "version_range_unpinned",
+          "command": "\"setuptools>=68\""
+        },
+        {
+          "classification": "local_or_flagged_install",
+          "command": "--no-deps ."
+        }
+      ],
+      "path": ".github/workflows/tests.yml",
+      "uses": [
+        {
+          "classification": "mutable_or_unverified_reference",
+          "reference": "actions/checkout@v4"
+        },
+        {
+          "classification": "mutable_or_unverified_reference",
+          "reference": "actions/checkout@v4"
+        },
+        {
+          "classification": "mutable_or_unverified_reference",
+          "reference": "actions/setup-python@v5"
+        },
+        {
+          "classification": "mutable_or_unverified_reference",
+          "reference": "actions/setup-python@v5"
+        }
+      ]
+    }
+  ]
+}
