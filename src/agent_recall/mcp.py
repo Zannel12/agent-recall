@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import TextIO
 
-from .core import MAX_LIMIT, RecallError, follow_evidence, search_vault
+from .core import MAX_LIMIT, RecallError, follow_evidence, search_response_payload, search_vault
 
 
 class McpSearch:
@@ -34,7 +34,7 @@ class McpSearch:
             hits = search_vault(self._vault, arguments["query"], limit, diagnostics)
         except (RecallError, ValueError):
             return {"schema_version": "1.0", "code": "INVALID_ARGUMENT", "message": "Search request rejected."}
-        return {"schema_version": "1.0", "query": arguments["query"], "hits": [hit.__dict__ for hit in hits], "diagnostics": diagnostics}
+        return search_response_payload(str(arguments["query"]), hits, diagnostics)
 
 
 def serve(search: McpSearch, incoming: TextIO, outgoing: TextIO) -> None:

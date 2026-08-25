@@ -54,6 +54,24 @@ class SearchHit:
     heading: str
     excerpt: str
 
+    def to_wire(self) -> dict[str, object]:
+        """Render the versioned, source-linked public citation without machine paths."""
+        return {
+            "source_id": self.relative_path,
+            "relative_path": self.relative_path,
+            "chunk_id": self.chunk_id,
+            "excerpt": self.excerpt,
+            "score": self.score,
+            "score_components": self.score_components,
+            "title": self.title,
+            "heading": self.heading,
+        }
+
+
+def search_response_payload(query: str, hits: list[SearchHit], diagnostics: dict[str, int]) -> dict[str, object]:
+    """Return the protocol-v1 search envelope shared by CLI and local MCP."""
+    return {"schema_version": "1.0", "query": query, "hits": [hit.to_wire() for hit in hits], "diagnostics": diagnostics}
+
 
 @dataclass(frozen=True)
 class MarkdownChunk:

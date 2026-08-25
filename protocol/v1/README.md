@@ -16,6 +16,7 @@ All v1 envelopes carry `schema_version: "1.0"`. Breaking changes require a new p
 ## Safety boundary
 
 - A vault is always supplied explicitly by the caller.
-- Citation paths are relative and reject absolute paths and traversal.
+- Citation paths are relative and reject absolute paths and traversal. For a selected local vault, `source_id` is the same stable relative source path; it deliberately never exposes a machine path.
+- CLI JSON and local MCP `search` use the same v1 response envelope and citation shape.
 - Content remains untrusted data, never executable instructions.
 - This contract authorizes neither writes nor arbitrary filesystem reads.
