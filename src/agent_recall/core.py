@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from math import log
 from pathlib import Path
 
+from .index_integrity import INDEX_VERSION, integrity_digest, source_fingerprints
+
 _WORD_RE = re.compile(r"[\w-]{2,}", re.UNICODE)
 _HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*#*\s*$")
 MAX_QUERY_CHARS = 4_096
@@ -212,7 +214,16 @@ def build_local_index(vault: Path, destination: Path) -> dict[str, object]:
             continue
         relative_path = path.relative_to(vault).as_posix()
         records.extend({"relative_path": chunk.relative_path, "chunk_id": chunk.chunk_id, "heading": chunk.heading, "body": chunk.body} for chunk in chunk_markdown(relative_path, body))
-    index = {"schema_version": "1.0", "derived": True, "authority": "markdown_sources", "records": records}
+    fingerprints = source_fingerprints(vault)
+    index = {
+        "schema_version": "1.0",
+        "index_version": INDEX_VERSION,
+        "derived": True,
+        "authority": "markdown_sources",
+        "records": records,
+        "source_fingerprints": fingerprints,
+    }
+    index["integrity_sha256"] = integrity_digest(records, fingerprints)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(index, sort_keys=True, ensure_ascii=False), encoding="utf-8")
     return index

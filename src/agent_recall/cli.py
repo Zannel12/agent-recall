@@ -3,12 +3,28 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import cast
 
-from .core import RecallError, render_packet, search_vault
+from .core import RecallError, build_local_index, render_packet, search_vault
 
 
 def main(argv: list[str] | None = None) -> int:
     arguments = argv if argv is not None else __import__("sys").argv[1:]
+    if arguments[:1] == ["reindex"]:
+        parser = argparse.ArgumentParser(description="Explicitly rebuild a derived local index.")
+        parser.add_argument("reindex")
+        parser.add_argument("--vault", required=True, type=Path)
+        parser.add_argument("--destination", required=True, type=Path)
+        parser.add_argument("--json", action="store_true")
+        args = parser.parse_args(arguments)
+        try:
+            index = build_local_index(args.vault, args.destination)
+        except (RecallError, ValueError) as error:
+            parser.error(str(error))
+        payload = {"reindexed": True, "index_version": index["index_version"], "records": len(cast(list[object], index["records"]))}
+        print(json.dumps(payload, sort_keys=True) if args.json else "reindex: complete")
+        return 0
+
     if arguments[:1] == ["doctor"]:
         parser = argparse.ArgumentParser(description="Check explicit local Agent Recall configuration.")
         parser.add_argument("doctor")
