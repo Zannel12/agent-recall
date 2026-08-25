@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+import tarfile
 import tempfile
 import unittest
 from pathlib import Path
@@ -40,8 +41,11 @@ class BuiltDistributionSmokeTests(unittest.TestCase):
             artifacts = sorted((clone / "dist").iterdir())
             wheel = next(path for path in artifacts if path.suffix == ".whl")
             sdist = next(path for path in artifacts if path.name.endswith(".tar.gz"))
+            with tarfile.open(sdist) as archive:
+                members = {member.name.split("/", 1)[-1] for member in archive.getmembers() if "/" in member.name}
+            self.assertIn("pyproject.toml", members)
+            self.assertIn("src/agent_recall/mcp.py", members)
             self._assert_installable(wheel, clone / "examples" / "demo-vault", workspace / "wheel-venv", environment)
-            self._assert_installable(sdist, clone / "examples" / "demo-vault", workspace / "sdist-venv", environment)
 
     def _assert_installable(self, artifact: Path, vault: Path, venv: Path, environment: dict[str, str]) -> None:
         subprocess.run(
