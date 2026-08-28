@@ -35,7 +35,7 @@ External model-card metrics are not adopted as Cited Vault Recall metrics.
 
 ## Decision
 
-**Do not add a dense or hybrid retrieval implementation now.**
+**Do not add a dense or hybrid retrieval implementation now.** The checked-in machine-readable state is [the semantic retrieval decision gate](../semantic-retrieval-gate.md); it remains `DEFER` until every documented prerequisite is evidenced.
 
 The optional semantic layer has not earned implementation because no candidate has been run against a versioned Cited Vault Recall acceptance corpus, and the following prerequisites are absent:
 

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "decision": "DEFER",
+  "implementation_allowed": false,
+  "lexical_baseline": "benchmarks/evaluation/v1/baseline.json",
+  "scope": "synthetic-only research gate; not a real-vault quality claim",
+  "prerequisites": {
+    "representative_synthetic_benchmark": {
+      "status": "NOT_READY",
+      "requirement": "Versioned privacy-safe paraphrase and multilingual cases beyond the two diagnostic probes, with judged citations."
+    },
+    "pinned_model_provenance": {
+      "status": "NOT_READY",
+      "requirement": "A selected model revision, license review, artifact checksum, model-size budget, and provenance record."
+    },
+    "offline_acquisition_contract": {
+      "status": "NOT_READY",
+      "requirement": "An explicit operator-controlled local-cache procedure with no silent network fetch or telemetry."
+    },
+    "quality_latency_memory_disk_comparison": {
+      "status": "NOT_READY",
+      "requirement": "Measured synthetic comparison against lexical retrieval with declared limits for quality, latency, memory, and disk."
+    },
+    "opt_in_citation_equivalence": {
+      "status": "NOT_READY",
+      "requirement": "An explicit opt-in interface that preserves chunk citations, relative-path guarantees, error semantics, and the lexical default."
+    }
+  },
+  "reopen_rule": "Implementation may be proposed only after every prerequisite is READY and a separately approved implementation point is authorized."
+}
