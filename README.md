@@ -49,7 +49,7 @@ agent-recall doctor --config recall.json --json
 
 ## Agent integration
 
-Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (vault + query) and one output (source-linked context packet). For an isolated local install for an autonomous agent, follow the **[standalone installation guide](docs/autonomous-agent-installation.md)**. For a copyable handoff to another coding/AI agent, use **[examples/agent-brief.md](examples/agent-brief.md)**.
+Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (vault + query) and one output (source-linked context packet). For an isolated local install for an autonomous agent, follow the **[standalone installation guide](docs/autonomous-agent-installation.md)**. For a copyable handoff to another coding/AI agent, use **[examples/agent-brief.md](examples/agent-brief.md)**. Run the synthetic expected-result [official integration demos](examples/official-integration-demos.py) for CLI, local MCP, and a **configuration-plan-only** Hermes example; it never configures or connects a Hermes host.
 
 ## Trust and provenance
 
