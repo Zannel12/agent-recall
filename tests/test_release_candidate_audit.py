@@ -49,7 +49,7 @@ class ReleaseCandidateAuditTests(unittest.TestCase):
     def test_tracked_secret_like_value_is_rejected_without_echoing_value(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            secret = "ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+            secret = "ghp_" + ("A" * 34)
             repo = self._repo(root, {"settings.py": f'TOKEN = "{secret}"\n'})
             report = root / "audit.json"
             result = subprocess.run(
