@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from typing import cast
 
-from .core import MAX_LIMIT, RecallError, build_local_index, render_packet, search_response_payload, search_vault
+from .core import MAX_LIMIT, RecallError, build_local_index, error_payload, render_packet, search_response_payload, search_vault
 
 
 def _doctor_payload(configured_vault: Path | None) -> dict[str, object]:
@@ -114,6 +114,9 @@ def main(argv: list[str] | None = None) -> int:
         hits = search_vault(args.vault, args.query, args.limit, diagnostics, russian_lexical_expansion=args.russian_lexical_expansion)
     except ValueError as error:
         code = error.code if isinstance(error, RecallError) else "INVALID_ARGUMENT"
+        if args.format == "json":
+            print(json.dumps(error_payload(code, str(error)), indent=2))
+            return 2
         parser.error(f"{code}: {error}")
     if args.format == "json":
         print(json.dumps(search_response_payload(args.query, hits, diagnostics), indent=2))

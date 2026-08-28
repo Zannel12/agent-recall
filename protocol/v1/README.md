@@ -13,6 +13,22 @@ This directory defines transport-independent JSON contracts. It defines data sha
 
 All v1 envelopes carry `schema_version: "1.0"`. Breaking changes require a new protocol directory/version and must not silently change v1 semantics.
 
+## Repairable errors
+
+Runtime search failures returned by CLI JSON mode and local MCP tool/resource calls use `error.schema.json`:
+
+```json
+{
+  "schema_version": "1.0",
+  "code": "VAULT_NOT_FOUND",
+  "message": "Selected vault directory is unavailable",
+  "next_step": "CHECK_EXPLICIT_VAULT",
+  "retryable": false
+}
+```
+
+`next_step` is a closed, non-operational hint: `CHECK_ARGUMENTS`, `CHECK_EXPLICIT_VAULT`, or `SEARCH_AGAIN`. It never contains an absolute path, shell command, secret, host configuration instruction, or automatic repair request. `retryable: false` means callers must not automatically repeat the same failing request. CLI argument parsing and JSON-RPC framing errors retain their respective native error contracts; they are not represented as search-result errors.
+
 ## Safety boundary
 
 - A vault is always supplied explicitly by the caller.

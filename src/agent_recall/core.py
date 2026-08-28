@@ -30,6 +30,24 @@ class RecallError(ValueError):
         self.code = code
 
 
+_ERROR_NEXT_STEPS = {
+    "VAULT_NOT_FOUND": "CHECK_EXPLICIT_VAULT",
+    "EVIDENCE_NOT_FOUND": "SEARCH_AGAIN",
+    "INVALID_EVIDENCE_ID": "SEARCH_AGAIN",
+}
+
+
+def error_payload(code: str, message: str) -> dict[str, object]:
+    """Render a closed, safe v1 error envelope for repair-capable callers."""
+    return {
+        "schema_version": "1.0",
+        "code": code,
+        "message": message,
+        "next_step": _ERROR_NEXT_STEPS.get(code, "CHECK_ARGUMENTS"),
+        "retryable": False,
+    }
+
+
 @dataclass(frozen=True)
 class UntrustedContent:
     body: str

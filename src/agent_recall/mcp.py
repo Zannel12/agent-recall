@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import TextIO
 
-from .core import MAX_LIMIT, RecallError, follow_evidence, search_response_payload, search_vault
+from .core import MAX_LIMIT, RecallError, error_payload, follow_evidence, search_response_payload, search_vault
 
 
 class McpSearch:
@@ -19,21 +19,22 @@ class McpSearch:
         try:
             chunks = follow_evidence(self._vault, chunk_id, neighbor_limit=0)
         except (RecallError, ValueError):
-            return {"schema_version": "1.0", "code": "INVALID_EVIDENCE_ID", "message": "Evidence is unavailable."}
+            return error_payload("INVALID_EVIDENCE_ID", "Evidence is unavailable.")
         chunk = chunks[0]
         return {"schema_version": "1.0", "chunk_id": chunk.chunk_id, "relative_path": chunk.relative_path, "text": chunk.body}
 
     def call(self, arguments: dict[str, object]) -> dict[str, object]:
         if set(arguments) - {"query", "limit"} or not isinstance(arguments.get("query"), str):
-            return {"schema_version": "1.0", "code": "INVALID_ARGUMENT", "message": "Invalid search arguments."}
+            return error_payload("INVALID_ARGUMENT", "Invalid search arguments.")
         limit = arguments.get("limit", 8)
         if not isinstance(limit, int):
-            return {"schema_version": "1.0", "code": "INVALID_ARGUMENT", "message": "Invalid search arguments."}
+            return error_payload("INVALID_ARGUMENT", "Invalid search arguments.")
         diagnostics: dict[str, int] = {}
         try:
             hits = search_vault(self._vault, arguments["query"], limit, diagnostics)
-        except (RecallError, ValueError):
-            return {"schema_version": "1.0", "code": "INVALID_ARGUMENT", "message": "Search request rejected."}
+        except (RecallError, ValueError) as error:
+            code = error.code if isinstance(error, RecallError) else "INVALID_ARGUMENT"
+            return error_payload(code, "Search request rejected.")
         return search_response_payload(str(arguments["query"]), hits, diagnostics)
 
 

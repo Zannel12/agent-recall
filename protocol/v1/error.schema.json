@@ -4,11 +4,15 @@
   "title": "Agent Recall protocol error",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "code", "message"],
+  "required": ["schema_version", "code", "message", "next_step", "retryable"],
   "properties": {
     "schema_version": {"const": "1.0"},
     "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
     "message": {"type": "string", "minLength": 1},
-    "retryable": {"type": "boolean", "default": false}
+    "next_step": {
+      "type": "string",
+      "enum": ["CHECK_ARGUMENTS", "CHECK_EXPLICIT_VAULT", "SEARCH_AGAIN"]
+    },
+    "retryable": {"type": "boolean"}
   }
 }
