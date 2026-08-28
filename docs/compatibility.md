@@ -23,6 +23,16 @@ A host version is intentionally not inferred from a documentation page. `version
 
 ## Interpretation limits
 
+### Owner-run synthetic protocol packs
+
+The following packs are documentation-only, non-mutating procedures for a separately approved future verification. They retain every host at `Documented` until direct synthetic-host evidence exists:
+
+- [Hermes](integrations/hermes-synthetic-mcp-protocol.md)
+- [Codex](integrations/codex-synthetic-mcp-protocol.md)
+- [Claude Code](integrations/claude-code-synthetic-mcp-protocol.md)
+- [Cursor](integrations/cursor-synthetic-mcp-protocol.md)
+- [OpenClaw](integrations/openclaw-synthetic-mcp-protocol.md)
+
 Host documentation confirms only that each named host publishes an MCP-related surface. It does **not** prove that Cited Vault Recall has been installed in that host, that a host will load the prototype unchanged, or that a host configuration is safe for a particular vault.
 
 No host was installed, configured, authenticated, or connected while producing this matrix. The listed MCP modes are a compatibility hypothesis for future synthetic-host verification, not a request to configure them. There is no integration-tested or production-tested Cited Vault Recall host evidence in this repository.
