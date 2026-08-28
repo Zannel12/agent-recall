@@ -19,7 +19,7 @@ labels: bug
 
 ## Environment
 
-- Agent Recall version or commit:
+- Cited Vault Recall version or commit:
 - Python version:
 - OS:
 

@@ -1,6 +1,6 @@
 # Adaptations and Original Work
 
-## Original in Agent Recall
+## Original in Cited Vault Recall
 
 - Public-facing package layout and CLI contract.
 - Agent-readable repository documentation and security boundary.

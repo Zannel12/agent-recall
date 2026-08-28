@@ -6,7 +6,7 @@ import unittest
 
 from pathlib import Path
 
-from agent_recall.staging import MemoryCandidate, ReviewDecision, append_candidate, is_memory_worthy
+from cited_vault_recall.staging import MemoryCandidate, ReviewDecision, append_candidate, is_memory_worthy
 
 
 class StagingTests(unittest.TestCase):

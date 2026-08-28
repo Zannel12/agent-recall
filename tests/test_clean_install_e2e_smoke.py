@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,14 +17,9 @@ class CleanInstallEndToEndSmokeTests(unittest.TestCase):
     def test_clean_clone_editable_install_cli_doctor_and_mcp_search(self):
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory)
-            clone = workspace / "agent-recall"
+            clone = workspace / "cited-vault-recall"
             venv = workspace / "venv"
-            subprocess.run(
-                ["git", "clone", "--local", str(ROOT), str(clone)],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
+            shutil.copytree(ROOT, clone, ignore=shutil.ignore_patterns(".git", "dist", "*.egg-info", "__pycache__"))
             subprocess.run([sys.executable, "-m", "venv", str(venv)], check=True, capture_output=True, text=True)
             python = venv / "bin" / "python"
             commands = venv / "bin"
@@ -36,7 +32,7 @@ class CleanInstallEndToEndSmokeTests(unittest.TestCase):
             vault = clone / "examples" / "demo-vault"
 
             cli = subprocess.run(
-                [str(commands / "agent-recall"), str(vault), "privacy", "--format", "json"],
+                [str(commands / "cited-vault-recall"), str(vault), "privacy", "--format", "json"],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -48,7 +44,7 @@ class CleanInstallEndToEndSmokeTests(unittest.TestCase):
             self.assertNotIn(str(vault), cli.stdout)
 
             doctor = subprocess.run(
-                [str(commands / "agent-recall"), "doctor", "--vault", str(vault), "--json"],
+                [str(commands / "cited-vault-recall"), "doctor", "--vault", str(vault), "--json"],
                 check=True,
                 capture_output=True,
                 text=True,
@@ -58,7 +54,7 @@ class CleanInstallEndToEndSmokeTests(unittest.TestCase):
             self.assertTrue(doctor_payload["vault"]["accessible"])
 
             server = subprocess.Popen(
-                [str(commands / "agent-recall-mcp"), "--vault", str(vault)],
+                [str(commands / "cited-vault-recall-mcp"), "--vault", str(vault)],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,

@@ -8,22 +8,22 @@ ROOT = Path(__file__).parents[1]
 
 
 class PackageMigrationManifestTests(unittest.TestCase):
-    def test_manifest_accounts_for_every_identity_surface_before_a_rename(self):
+    def test_manifest_accounts_for_every_identity_surface_after_the_local_rename(self):
         manifest = ROOT / "docs" / "package-migration-manifest.md"
         text = manifest.read_text(encoding="utf-8")
 
         self.assertIn("## Current identity", text)
-        self.assertIn("## Future target", text)
+        self.assertIn("## Implemented target", text)
         self.assertIn("## Migration inventory", text)
         self.assertIn("## Deliberate non-actions", text)
         for required in (
-            "`agent-recall`",
-            "`agent_recall`",
+            "`cited-vault-recall`",
+            "`cited_vault_recall`",
             "`cited-vault-recall`",
             "`cited_vault_recall`",
             "`cited-vault-recall-mcp`",
             "`pyproject.toml`",
-            "`src/agent_recall/`",
+            "`src/cited_vault_recall/`",
             "`tests/`",
             "`docs/`",
             "`.github/workflows/tests.yml`",
@@ -38,7 +38,7 @@ class PackageMigrationManifestTests(unittest.TestCase):
         self.assertIn("no package publication", text)
         self.assertIn("no GitHub repository rename", text)
         self.assertIn("no Git tag or GitHub Release", text)
-        self.assertIn("no compatibility alias", text)
+        self.assertIn("No compatibility alias exists", text)
         self.assertIn("No real vault, host configuration, or credential", text)
 
 

@@ -29,7 +29,7 @@ def _request(server: subprocess.Popen[str], request: dict[str, object]) -> dict[
 
 def cli_demo() -> dict[str, str]:
     result = subprocess.run(
-        [sys.executable, "-m", "agent_recall.cli", str(DEMO_VAULT), "privacy", "--format", "json"],
+        [sys.executable, "-m", "cited_vault_recall.cli", str(DEMO_VAULT), "privacy", "--format", "json"],
         cwd=ROOT,
         env=ENVIRONMENT,
         text=True,
@@ -43,7 +43,7 @@ def cli_demo() -> dict[str, str]:
 
 def mcp_demo() -> dict[str, object]:
     server = subprocess.Popen(
-        [sys.executable, "-m", "agent_recall.mcp", "--vault", str(DEMO_VAULT)],
+        [sys.executable, "-m", "cited_vault_recall.mcp", "--vault", str(DEMO_VAULT)],
         cwd=ROOT,
         env=ENVIRONMENT,
         stdin=subprocess.PIPE,
@@ -74,11 +74,11 @@ def mcp_demo() -> dict[str, object]:
 
 
 def hermes_plan_demo() -> dict[str, object]:
-    from agent_recall.hermes_adapter import build_hermes_mcp_plan
+    from cited_vault_recall.hermes_adapter import build_hermes_mcp_plan
 
     plan = build_hermes_mcp_plan(
         config_path=Path("/synthetic/hermes-config.yaml"),
-        backup_path=Path("/synthetic/hermes-config.yaml.agent-recall.bak"),
+        backup_path=Path("/synthetic/hermes-config.yaml.cited-vault-recall.bak"),
         vault_path=Path("/synthetic/demo-vault"),
         observed_server_names=set(),
         config_exists=True,

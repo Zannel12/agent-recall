@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.policy import LifecyclePolicy, PostTurnDecision, PreTurnDecision
-from agent_recall.staging import MemoryCandidate
+from cited_vault_recall.policy import LifecyclePolicy, PostTurnDecision, PreTurnDecision
+from cited_vault_recall.staging import MemoryCandidate
 
 
 class LifecyclePolicyTests(unittest.TestCase):

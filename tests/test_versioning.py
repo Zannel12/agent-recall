@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.versioning import Compatibility, MigrationPlan, RecoveryAction, VersionSet, assess_compatibility, assess_recovery
+from cited_vault_recall.versioning import Compatibility, MigrationPlan, RecoveryAction, VersionSet, assess_compatibility, assess_recovery
 
 
 class VersioningTests(unittest.TestCase):

@@ -12,7 +12,7 @@ Future roadmap points introduce those capabilities. Without explicit authority b
 
 ## Decision
 
-Agent Recall uses six ordered layers. A lower layer may not silently acquire authority or wider access from a higher layer.
+Cited Vault Recall uses six ordered layers. A lower layer may not silently acquire authority or wider access from a higher layer.
 
 ```text
 curated source vault (canonical evidence)

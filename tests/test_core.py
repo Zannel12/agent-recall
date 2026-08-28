@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, build_local_index, chunk_markdown, follow_evidence, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
+from cited_vault_recall.core import MAX_FILE_BYTES, MAX_OUTPUT_CHARS, MAX_QUERY_CHARS, build_local_index, chunk_markdown, follow_evidence, normalize_text, render_packet, render_profiled_packet, search_vault, untrusted_content
 
 
 class SearchVaultTests(unittest.TestCase):

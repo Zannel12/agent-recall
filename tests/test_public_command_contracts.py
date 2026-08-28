@@ -17,14 +17,14 @@ PUBLIC_COMMAND_DOCS = (
 class PublicCommandContractTests(unittest.TestCase):
     def test_public_docs_do_not_advertise_removed_search_subcommand(self):
         for path in PUBLIC_COMMAND_DOCS:
-            self.assertNotIn("agent-recall search", path.read_text(encoding="utf-8"), path)
+            self.assertNotIn("cited-vault-recall search", path.read_text(encoding="utf-8"), path)
 
     def test_public_docs_describe_canonical_cli_and_mcp_forms(self):
         compatibility = (ROOT / "docs" / "compatibility.md").read_text(encoding="utf-8")
         hermes_plan = (ROOT / "docs" / "hermes-mcp-adapter-plan.md").read_text(encoding="utf-8")
-        self.assertIn("agent-recall <vault> <query>", compatibility)
-        self.assertIn("agent-recall-mcp --vault <vault>", compatibility)
-        self.assertIn("agent-recall <caller-selected-vault> <query> --format json", hermes_plan)
+        self.assertIn("cited-vault-recall <vault> <query>", compatibility)
+        self.assertIn("cited-vault-recall-mcp --vault <vault>", compatibility)
+        self.assertIn("cited-vault-recall <caller-selected-vault> <query> --format json", hermes_plan)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from typing import cast
 
-from agent_recall.evaluation import METRICS, run_evaluation
+from cited_vault_recall.evaluation import METRICS, run_evaluation
 
 
 ROOT = Path(__file__).parents[1] / "benchmarks" / "evaluation" / "v1"

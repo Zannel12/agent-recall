@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.mcp import McpSearch
+from cited_vault_recall.mcp import McpSearch
 
 
 ROOT = Path(__file__).parents[1]
@@ -29,9 +29,9 @@ class AgentRepairableErrorTests(unittest.TestCase):
         )
 
     def test_json_cli_missing_vault_returns_closed_repairable_error_without_path_leak(self):
-        missing = Path(tempfile.gettempdir()) / "agent-recall-private-repairable-vault"
+        missing = Path(tempfile.gettempdir()) / "cited-vault-recall-private-repairable-vault"
         result = subprocess.run(
-            [sys.executable, "-m", "agent_recall.cli", str(missing), "privacy", "--format", "json"],
+            [sys.executable, "-m", "cited_vault_recall.cli", str(missing), "privacy", "--format", "json"],
             cwd=ROOT,
             env=ENVIRONMENT,
             text=True,

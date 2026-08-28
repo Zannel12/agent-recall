@@ -28,7 +28,7 @@ jobs:
       - name: Run test suite
         run: python -m unittest discover -s tests -v
       - name: Verify installed CLI demo
-        run: agent-recall examples/demo-vault "privacy" --format json
+        run: cited-vault-recall examples/demo-vault "privacy" --format json
 
   smoke:
     name: Clean installation smoke

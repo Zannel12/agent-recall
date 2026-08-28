@@ -2,7 +2,7 @@ import json
 import unittest
 from dataclasses import asdict
 
-from agent_recall.schemas import Citation, EvidenceItem, Source, derived_fact
+from cited_vault_recall.schemas import Citation, EvidenceItem, Source, derived_fact
 
 
 class SchemaTests(unittest.TestCase):

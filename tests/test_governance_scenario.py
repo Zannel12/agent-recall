@@ -8,11 +8,11 @@ import unittest
 from pathlib import Path
 from typing import cast
 
-from agent_recall.cli import main
-from agent_recall.lifecycle import CorrectionRequest, LifecycleAction
-from agent_recall.mcp import McpSearch
-from agent_recall.portability import DeletionRequest
-from agent_recall.staging import MemoryCandidate, ReviewDecision, append_candidate
+from cited_vault_recall.cli import main
+from cited_vault_recall.lifecycle import CorrectionRequest, LifecycleAction
+from cited_vault_recall.mcp import McpSearch
+from cited_vault_recall.portability import DeletionRequest
+from cited_vault_recall.staging import MemoryCandidate, ReviewDecision, append_candidate
 
 
 class GovernanceScenarioTests(unittest.TestCase):

@@ -19,7 +19,7 @@ class InstalledMcpEntrypointTests(unittest.TestCase):
             subprocess.run([sys.executable, "-m", "venv", str(venv)], check=True, capture_output=True, text=True)
             scripts = venv / ("Scripts" if sys.platform == "win32" else "bin")
             python = scripts / ("python.exe" if sys.platform == "win32" else "python")
-            mcp = scripts / ("agent-recall-mcp.exe" if sys.platform == "win32" else "agent-recall-mcp")
+            mcp = scripts / ("cited-vault-recall-mcp.exe" if sys.platform == "win32" else "cited-vault-recall-mcp")
             subprocess.run(
                 [str(python), "-m", "pip", "install", "--no-deps", "-e", str(ROOT)],
                 check=True,

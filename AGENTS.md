@@ -1,4 +1,4 @@
-# Agent Recall — Agent Instructions
+# Cited Vault Recall — Agent Instructions
 
 ## Goal
 
@@ -8,7 +8,7 @@ Preserve the local-first, read-only contract: selected Markdown vault + query �
 
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -v
-PYTHONPATH=src python3 -m agent_recall.cli examples/demo-vault privacy --format json
+PYTHONPATH=src python3 -m cited_vault_recall.cli examples/demo-vault privacy --format json
 ```
 
 ## Rules

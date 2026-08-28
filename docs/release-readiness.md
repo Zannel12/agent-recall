@@ -14,7 +14,7 @@ This page is a bounded readiness assessment for Agent Recall. It separates compl
 |---|---|---|---|
 | Local regression and clean-install evidence | `READY` | The repository has focused/full regression tests and CI evidence; the exact count and run are recorded per completed roadmap point. | Re-run against the next reviewed commit. |
 | Unreleased package state | `READY` | Metadata remains `0.2.0.dev0`; no GitHub tag, GitHub Release, or registry publication exists. | Keep unreleased until final gates are approved. |
-| Publishable package identity | `BLOCKED` | The current `agent-recall` distribution-name collision is recorded in ADR-0002. | Complete the reviewed local identity migration before any registry decision. |
+| Publishable local package identity | `READY` | Local distribution/import/executables now use the non-legacy ADR-0002 identity; registry availability is deliberately unknown. | Complete A4 locally, then re-check the registry only in the separately approved final publication procedure. |
 | Release-candidate artifact/checksum proof | `NOT_READY` | No reviewed release-candidate artifact set is designated. | Complete roadmap A4 locally. |
 | Semantic/vector decision gate | `NOT_READY` | ADR-0001 defers optional semantic retrieval pending reproducible evidence. | Complete roadmap A5; do not acquire a model or add dependencies yet. |
 | Real-host procedure packs | `NOT_READY` | Existing host information is documentation-only or synthetic protocol evidence. | Complete roadmap A6 without configuring any host. |

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.lifecycle import CorrectionRequest, LifecycleAction
+from cited_vault_recall.lifecycle import CorrectionRequest, LifecycleAction
 
 
 class LifecycleTests(unittest.TestCase):

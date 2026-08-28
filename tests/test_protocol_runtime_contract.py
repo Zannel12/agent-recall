@@ -7,8 +7,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.cli import main
-from agent_recall.mcp import McpSearch
+from cited_vault_recall.cli import main
+from cited_vault_recall.mcp import McpSearch
 
 
 ROOT = Path(__file__).parents[1]

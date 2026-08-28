@@ -6,7 +6,7 @@ import time
 import tracemalloc
 from pathlib import Path
 
-from agent_recall.core import search_vault
+from cited_vault_recall.core import search_vault
 
 FILE_COUNT = 1_000
 QUERY = "synthetic retrieval target"

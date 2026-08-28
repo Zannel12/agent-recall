@@ -1,10 +1,10 @@
-# Agent Recall — Integration Brief for AI Agents
+# Cited Vault Recall — Integration Brief for AI Agents
 
-Give this document to an AI coding agent together with the Agent Recall repository.
+Give this document to an AI coding agent together with the Cited Vault Recall repository.
 
 ## Mission
 
-Integrate **Agent Recall** as a local, read-only retrieval layer:
+Integrate **Cited Vault Recall** as a local, read-only retrieval layer:
 
 ```text
 selected Markdown vault + query → ranked, source-linked context packet
@@ -26,7 +26,7 @@ It helps an agent retrieve relevant excerpts without receiving the user’s enti
 python -m venv .venv
 . .venv/bin/activate
 pip install -e .
-agent-recall /absolute/path/to/markdown-vault "your retrieval query" --format json
+cited-vault-recall /absolute/path/to/markdown-vault "your retrieval query" --format json
 ```
 
 Expected JSON shape:

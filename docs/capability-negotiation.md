@@ -1,6 +1,6 @@
 # Capability negotiation and visible fallback
 
-Agent Recall keeps integration and retrieval decisions explicit. This module is a **pure policy contract**: it accepts caller-supplied availability and returns a deterministic selection. It does not probe a host, read configuration, install dependencies, connect to MCP, start a process, load a model, run a query, or mutate any state.
+Cited Vault Recall keeps integration and retrieval decisions explicit. This module is a **pure policy contract**: it accepts caller-supplied availability and returns a deterministic selection. It does not probe a host, read configuration, install dependencies, connect to MCP, start a process, load a model, run a query, or mutate any state.
 
 ## Transport selection
 

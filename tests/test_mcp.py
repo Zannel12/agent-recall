@@ -7,8 +7,8 @@ import unittest
 from pathlib import Path
 from typing import cast
 
-from agent_recall.core import MAX_LIMIT
-from agent_recall.mcp import McpSearch, handle_request, serve, tools_list
+from cited_vault_recall.core import MAX_LIMIT
+from cited_vault_recall.mcp import McpSearch, handle_request, serve, tools_list
 
 
 class McpContractTests(unittest.TestCase):

@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-recall"
+name = "cited-vault-recall"
 version = "0.2.0.dev0"
 description = "Cited, scoped retrieval from local Markdown vaults for AI agents."
 readme = "README.md"
@@ -32,8 +32,8 @@ Issues = "https://github.com/Zannel12/agent-recall/issues"
 Security = "https://github.com/Zannel12/agent-recall/security/advisories/new"
 
 [project.scripts]
-agent-recall = "agent_recall.cli:main"
-agent-recall-mcp = "agent_recall.mcp:main"
+cited-vault-recall = "cited_vault_recall.cli:main"
+cited-vault-recall-mcp = "cited_vault_recall.mcp:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

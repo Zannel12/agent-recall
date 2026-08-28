@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 from typing import cast
 
-from agent_recall.core import build_local_index, search_vault
+from cited_vault_recall.core import build_local_index, search_vault
 
 
 SOURCE_COUNT = 240

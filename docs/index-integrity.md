@@ -5,7 +5,7 @@ A local index is a disposable derived artifact. Markdown remains authoritative.
 ## Explicit recovery
 
 ```bash
-agent-recall reindex --vault /absolute/path/to/vault --destination /absolute/path/to/index.json --json
+cited-vault-recall reindex --vault /absolute/path/to/vault --destination /absolute/path/to/index.json --json
 ```
 
 Both paths are supplied by the caller. The destination must be outside the selected vault. Reindexing replaces only that derived destination; it never edits Markdown sources.

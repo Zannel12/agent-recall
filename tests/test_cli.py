@@ -17,7 +17,7 @@ class CliTests(unittest.TestCase):
             )
             environment = {**os.environ, "PYTHONPATH": "src"}
             result = subprocess.run(
-                [sys.executable, "-m", "agent_recall.cli", str(vault), "privacy", "--format", "json"],
+                [sys.executable, "-m", "cited_vault_recall.cli", str(vault), "privacy", "--format", "json"],
                 cwd=Path(__file__).parents[1],
                 env=environment,
                 text=True,
@@ -44,7 +44,7 @@ class CliTests(unittest.TestCase):
             config = root / "recall.json"
             config.write_text(json.dumps({"vault": str(vault)}), encoding="utf-8")
             result = subprocess.run(
-                [sys.executable, "-m", "agent_recall.cli", "doctor", "--config", str(config), "--json"],
+                [sys.executable, "-m", "cited_vault_recall.cli", "doctor", "--config", str(config), "--json"],
                 cwd=Path(__file__).parents[1], env={**os.environ, "PYTHONPATH": "src"}, text=True, capture_output=True,
             )
 
@@ -55,7 +55,7 @@ class CliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
             result = subprocess.run(
-                [sys.executable, "-m", "agent_recall.cli", "doctor", "--vault", str(vault), "--json"],
+                [sys.executable, "-m", "cited_vault_recall.cli", "doctor", "--vault", str(vault), "--json"],
                 cwd=Path(__file__).parents[1], env={**os.environ, "PYTHONPATH": "src"}, text=True, capture_output=True,
             )
 
@@ -66,9 +66,9 @@ class CliTests(unittest.TestCase):
             self.assertFalse(payload["local_state"]["discovered"])
 
     def test_cli_missing_vault_uses_stable_code_without_path_leak(self):
-        missing = Path(tempfile.gettempdir()) / "agent-recall-private-missing-vault"
+        missing = Path(tempfile.gettempdir()) / "cited-vault-recall-private-missing-vault"
         result = subprocess.run(
-            [sys.executable, "-m", "agent_recall.cli", str(missing), "privacy"],
+            [sys.executable, "-m", "cited_vault_recall.cli", str(missing), "privacy"],
             cwd=Path(__file__).parents[1], env={**os.environ, "PYTHONPATH": "src"}, text=True, capture_output=True,
         )
 

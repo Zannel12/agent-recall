@@ -6,7 +6,7 @@
 
 ## Context
 
-Agent Recall currently provides dependency-free, local BM25-style retrieval over cited Markdown chunks. Its baseline corpus is synthetic and proves only exact/lexical no-regression behavior.
+Cited Vault Recall currently provides dependency-free, local BM25-style retrieval over cited Markdown chunks. Its baseline corpus is synthetic and proves only exact/lexical no-regression behavior.
 
 A targeted semantic paraphrase probe found the current sparse retriever does not retrieve either intended source at rank 1:
 
@@ -31,13 +31,13 @@ Sources consulted:
 - [multilingual-e5-small model card](https://huggingface.co/intfloat/multilingual-e5-small)
 - [Sentence Transformers semantic-search documentation](https://www.sbert.net/examples/sentence_transformer/applications/semantic-search/README.html)
 
-External model-card metrics are not adopted as Agent Recall metrics.
+External model-card metrics are not adopted as Cited Vault Recall metrics.
 
 ## Decision
 
 **Do not add a dense or hybrid retrieval implementation now.**
 
-The optional semantic layer has not earned implementation because no candidate has been run against a versioned Agent Recall acceptance corpus, and the following prerequisites are absent:
+The optional semantic layer has not earned implementation because no candidate has been run against a versioned Cited Vault Recall acceptance corpus, and the following prerequisites are absent:
 
 1. A representative, privacy-safe benchmark that includes paraphrase and multilingual queries beyond the two diagnostic probes.
 2. A pinned model revision, license review, checksums/weight provenance, and explicit model-size budget.

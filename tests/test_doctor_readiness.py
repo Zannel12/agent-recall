@@ -14,7 +14,7 @@ ENVIRONMENT = {**os.environ, "PYTHONPATH": "src"}
 class DoctorReadinessTests(unittest.TestCase):
     def _doctor(self, *arguments: str) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
-            [sys.executable, "-m", "agent_recall.cli", "doctor", *arguments, "--json"],
+            [sys.executable, "-m", "cited_vault_recall.cli", "doctor", *arguments, "--json"],
             cwd=ROOT,
             env=ENVIRONMENT,
             text=True,
@@ -42,7 +42,7 @@ class DoctorReadinessTests(unittest.TestCase):
             self.assertNotIn(str(vault), result.stdout)
 
     def test_doctor_uses_a_stable_missing_vault_code_without_discovery_or_path_leak(self):
-        missing = Path(tempfile.gettempdir()) / "agent-recall-private-doctor-vault"
+        missing = Path(tempfile.gettempdir()) / "cited-vault-recall-private-doctor-vault"
         result = self._doctor("--vault", str(missing))
 
         self.assertEqual(1, result.returncode)

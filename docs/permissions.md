@@ -1,6 +1,6 @@
 # Namespace capability gate
 
-`agent_recall.permissions` is a **closed, category-only capability gate**. It is not an identity, authentication, ownership, tenancy, resource, path-safety, or complete authorization system.
+`cited_vault_recall.permissions` is a **closed, category-only capability gate**. It is not an identity, authentication, ownership, tenancy, resource, path-safety, or complete authorization system.
 
 ## Closed inputs
 

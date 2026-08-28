@@ -34,7 +34,7 @@ class ReleaseReadinessTests(unittest.TestCase):
     def test_readiness_matrix_prohibits_implicit_release_or_publication(self):
         text = (ROOT / "docs" / "release-readiness.md").read_text(encoding="utf-8")
 
-        self.assertIn("`agent-recall` distribution-name collision", text)
+        self.assertIn("registry availability is deliberately unknown", text)
         self.assertIn("no PyPI upload", text)
         self.assertIn("fresh explicit user approval", text)
         self.assertIn("one final action per Goal turn", text)

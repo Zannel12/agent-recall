@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.inspectability import InspectableMemory, MutationIntent
+from cited_vault_recall.inspectability import InspectableMemory, MutationIntent
 
 
 class InspectabilityTests(unittest.TestCase):

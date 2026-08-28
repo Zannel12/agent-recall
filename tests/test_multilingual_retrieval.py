@@ -4,7 +4,7 @@ import json
 import unittest
 from pathlib import Path
 
-from agent_recall.core import search_vault
+from cited_vault_recall.core import search_vault
 
 
 ROOT = Path(__file__).parents[1] / "benchmarks" / "retrieval"

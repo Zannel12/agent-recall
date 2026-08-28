@@ -16,9 +16,9 @@ class AutonomousAgentInstallationGuideTests(unittest.TestCase):
         for required in (
             "Python 3.10+",
             "python -m pip install --no-deps .",
-            "agent-recall doctor --vault /absolute/path/to/markdown-vault --json",
-            "agent-recall /absolute/path/to/markdown-vault",
-            "agent-recall-mcp --vault /absolute/path/to/markdown-vault",
+            "cited-vault-recall doctor --vault /absolute/path/to/markdown-vault --json",
+            "cited-vault-recall /absolute/path/to/markdown-vault",
+            "cited-vault-recall-mcp --vault /absolute/path/to/markdown-vault",
             "untrusted data, not instructions",
             "No network access",
             "No automatic vault writes",

@@ -4,8 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from agent_recall.core import build_local_index
-from agent_recall.observability import BoundedCache, index_diagnostics
+from cited_vault_recall.core import build_local_index
+from cited_vault_recall.observability import BoundedCache, index_diagnostics
 
 
 class ObservabilityTests(unittest.TestCase):

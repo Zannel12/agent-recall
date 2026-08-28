@@ -11,10 +11,10 @@ class HermesMemoryOwnershipAdrTests(unittest.TestCase):
 
         for required in (
             "Status:** accepted",
-            "Agent Recall is not a Hermes memory provider",
+            "Cited Vault Recall is not a Hermes memory provider",
             "selected Markdown vault remains authoritative",
             "Built-in Hermes memory remains a compact profile and routing layer",
-            "External provider is non-authoritative for Agent Recall",
+            "External provider is non-authoritative for Cited Vault Recall",
             "do not synchronize",
             "do not merge",
             "explicit user approval",

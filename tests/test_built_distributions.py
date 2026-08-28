@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -23,13 +24,8 @@ class BuiltDistributionSmokeTests(unittest.TestCase):
         environment.pop("PYTHONPATH", None)
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory)
-            clone = workspace / "agent-recall"
-            subprocess.run(
-                ["git", "clone", "--local", str(ROOT), str(clone)],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
+            clone = workspace / "cited-vault-recall"
+            shutil.copytree(ROOT, clone, ignore=shutil.ignore_patterns(".git", "dist", "*.egg-info", "__pycache__"))
             subprocess.run(
                 [sys.executable, "-c", BUILD_COMMAND],
                 cwd=clone,
@@ -44,7 +40,7 @@ class BuiltDistributionSmokeTests(unittest.TestCase):
             with tarfile.open(sdist) as archive:
                 members = {member.name.split("/", 1)[-1] for member in archive.getmembers() if "/" in member.name}
             self.assertIn("pyproject.toml", members)
-            self.assertIn("src/agent_recall/mcp.py", members)
+            self.assertIn("src/cited_vault_recall/mcp.py", members)
             self._assert_installable(wheel, clone / "examples" / "demo-vault", workspace / "wheel-venv", environment)
 
     def _assert_installable(self, artifact: Path, vault: Path, venv: Path, environment: dict[str, str]) -> None:
@@ -61,7 +57,7 @@ class BuiltDistributionSmokeTests(unittest.TestCase):
             env=environment,
         )
         query = subprocess.run(
-            [str(commands / "agent-recall"), str(vault), "privacy", "--format", "json"],
+            [str(commands / "cited-vault-recall"), str(vault), "privacy", "--format", "json"],
             check=True,
             capture_output=True,
             text=True,
@@ -70,7 +66,7 @@ class BuiltDistributionSmokeTests(unittest.TestCase):
         payload = json.loads(query.stdout)
         self.assertEqual("privacy.md", payload["hits"][0]["relative_path"])
         mcp_help = subprocess.run(
-            [str(commands / "agent-recall-mcp"), "--help"],
+            [str(commands / "cited-vault-recall-mcp"), "--help"],
             check=True,
             capture_output=True,
             text=True,

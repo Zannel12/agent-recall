@@ -83,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if arguments[:1] == ["doctor"]:
-        parser = argparse.ArgumentParser(description="Check explicit local Agent Recall configuration.")
+        parser = argparse.ArgumentParser(description="Check explicit local Cited Vault Recall configuration.")
         parser.add_argument("doctor")
         parser.add_argument("--vault", type=Path)
         parser.add_argument("--config", type=Path)

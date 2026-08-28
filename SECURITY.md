@@ -2,7 +2,7 @@
 
 ## Privacy model
 
-Agent Recall is designed to run locally and read only the selected Markdown vault. Before any Markdown read it resolves both the selected vault root and the candidate target; a target outside the resolved root (including an external file symlink or nested directory symlink) is skipped. It has no network access, telemetry, API keys, or automatic vault writes.
+Cited Vault Recall is designed to run locally and read only the selected Markdown vault. Before any Markdown read it resolves both the selected vault root and the candidate target; a target outside the resolved root (including an external file symlink or nested directory symlink) is skipped. It has no network access, telemetry, API keys, or automatic vault writes.
 
 ## Do not commit
 
@@ -12,7 +12,7 @@ Agent Recall is designed to run locally and read only the selected Markdown vaul
 
 ## Retrieval scope and exclusion policy
 
-A caller selects exactly one local vault; Agent Recall does not discover vaults or aggregate multiple vaults. The candidate allowlist is Markdown (`*.md`) only. Before resolving or reading a Markdown candidate, the retriever applies vault-root `.recallignore` glob patterns and default sensitivity filename patterns: `*.secret.md` and `*.private.md`. Excluded sources are counted only in aggregate diagnostics; their paths and contents are not returned. This is a deterministic filename policy, not a claim to detect every secret in arbitrary content.
+A caller selects exactly one local vault; Cited Vault Recall does not discover vaults or aggregate multiple vaults. The candidate allowlist is Markdown (`*.md`) only. Before resolving or reading a Markdown candidate, the retriever applies vault-root `.recallignore` glob patterns and default sensitivity filename patterns: `*.secret.md` and `*.private.md`. Excluded sources are counted only in aggregate diagnostics; their paths and contents are not returned. This is a deterministic filename policy, not a claim to detect every secret in arbitrary content.
 
 ## Untrusted imports and retrieved content
 

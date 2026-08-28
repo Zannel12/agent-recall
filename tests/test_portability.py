@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.portability import BundleManifest, DeletionRequest, RestoreRequest
+from cited_vault_recall.portability import BundleManifest, DeletionRequest, RestoreRequest
 
 
 class PortabilityTests(unittest.TestCase):

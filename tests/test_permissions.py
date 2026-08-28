@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.permissions import Action, NamespaceScope, is_allowed
+from cited_vault_recall.permissions import Action, NamespaceScope, is_allowed
 
 
 class PermissionTests(unittest.TestCase):

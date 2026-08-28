@@ -1,11 +1,11 @@
-# Agent Recall
+# Cited Vault Recall
 
 [![Tests](https://github.com/Zannel12/agent-recall/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Zannel12/agent-recall/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Cited, scoped memory from a local Markdown vault for AI agents.**
 
-Agent Recall searches a vault you select and returns ranked excerpts with relative source paths. It is read-only, local-first, offline by default, and does not send the whole vault to an agent.
+Cited Vault Recall searches a vault you select and returns ranked excerpts with relative source paths. It is read-only, local-first, offline by default, and does not send the whole vault to an agent.
 
 ## 60-second quickstart
 
@@ -13,28 +13,28 @@ Agent Recall searches a vault you select and returns ranked excerpts with relati
 python -m venv .venv
 . .venv/bin/activate
 pip install -e .
-agent-recall examples/demo-vault "privacy local memory"
+cited-vault-recall examples/demo-vault "privacy local memory"
 ```
 
 JSON for an integration:
 
 ```bash
-agent-recall examples/demo-vault "privacy" --format json
+cited-vault-recall examples/demo-vault "privacy" --format json
 # Optional, deterministic Russian morphology/synonym expansion:
-agent-recall examples/demo-vault "локальную память" --format json --russian-lexical-expansion
+cited-vault-recall examples/demo-vault "локальную память" --format json --russian-lexical-expansion
 ```
 
 ## Local configuration and doctor
 
-Agent Recall never discovers a vault. Pass one explicitly or use a user-created JSON file:
+Cited Vault Recall never discovers a vault. Pass one explicitly or use a user-created JSON file:
 
 ```json
 {"vault": "/absolute/path/to/your/vault"}
 ```
 
 ```bash
-agent-recall doctor --config recall.json --json
-# or: agent-recall doctor --vault /absolute/path/to/your/vault --json
+cited-vault-recall doctor --config recall.json --json
+# or: cited-vault-recall doctor --vault /absolute/path/to/your/vault --json
 ```
 
 `doctor --json` reports a bounded `READY`/`NOT_READY` status plus stable codes for the local executable, explicit vault readability, ignore policy, and a local search probe. It reports only aggregate counts, does not search parent directories, home directories, or agent state, and never exposes an absolute vault path.

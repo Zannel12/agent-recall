@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 
-SOURCE = Path(__file__).parents[1] / "src" / "agent_recall"
+SOURCE = Path(__file__).parents[1] / "src" / "cited_vault_recall"
 
 
 class Python310CompatibilityTests(unittest.TestCase):
@@ -13,7 +13,7 @@ class Python310CompatibilityTests(unittest.TestCase):
             self.assertNotIn("from enum import StrEnum", path.read_text(encoding="utf-8"), path)
 
     def test_compatible_string_enum_keeps_value_string_semantics(self):
-        from agent_recall._compat import StrEnum
+        from cited_vault_recall._compat import StrEnum
 
         class Example(StrEnum):
             VALUE = "value"

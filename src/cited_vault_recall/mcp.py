@@ -91,7 +91,7 @@ def tools_list() -> dict[str, object]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run local Agent Recall MCP search over stdio.")
+    parser = argparse.ArgumentParser(description="Run local Cited Vault Recall MCP search over stdio.")
     parser.add_argument("--vault", required=True, type=Path, help="Explicit local Markdown vault")
     args = parser.parse_args(argv)
     if not args.vault.is_dir():

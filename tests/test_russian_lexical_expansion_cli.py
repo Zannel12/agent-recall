@@ -17,7 +17,7 @@ class RussianLexicalExpansionCliTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)
             (vault / "memory.md").write_text("# Локальная память\n\nЛокальная память остаётся в vault.", encoding="utf-8")
-            command = [sys.executable, "-m", "agent_recall.cli", str(vault), "локальную", "--format", "json"]
+            command = [sys.executable, "-m", "cited_vault_recall.cli", str(vault), "локальную", "--format", "json"]
             environment = {**os.environ, "PYTHONPATH": "src"}
 
             default = subprocess.run(command, cwd=ROOT, env=environment, text=True, capture_output=True, check=True)

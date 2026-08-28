@@ -9,9 +9,9 @@ import unittest
 from pathlib import Path
 from typing import cast
 
-from agent_recall.cli import main
-from agent_recall.index_integrity import index_needs_rebuild
-from agent_recall.core import build_local_index
+from cited_vault_recall.cli import main
+from cited_vault_recall.index_integrity import index_needs_rebuild
+from cited_vault_recall.core import build_local_index
 
 
 class IndexIntegrityTests(unittest.TestCase):

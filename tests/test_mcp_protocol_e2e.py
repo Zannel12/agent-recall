@@ -21,7 +21,7 @@ class McpProtocolEndToEndTests(unittest.TestCase):
             vault.mkdir()
             (vault / "privacy.md").write_text("# Privacy\n\nLocal retrieval is read-only.", encoding="utf-8")
             server = subprocess.Popen(
-                [sys.executable, "-m", "agent_recall.mcp", "--vault", str(vault)],
+                [sys.executable, "-m", "cited_vault_recall.mcp", "--vault", str(vault)],
                 cwd=ROOT,
                 env=ENVIRONMENT,
                 stdin=subprocess.PIPE,

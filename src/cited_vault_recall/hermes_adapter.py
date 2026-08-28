@@ -11,7 +11,7 @@ from enum import Enum
 from pathlib import Path
 
 
-SERVER_NAME = "agent-recall"
+SERVER_NAME = "cited-vault-recall"
 
 
 class PlanStatus(str, Enum):
@@ -32,7 +32,7 @@ class HermesMcpPlan:
 
 def _config_entry(vault_path: Path) -> dict[str, object]:
     return {
-        "command": "agent-recall-mcp",
+        "command": "cited-vault-recall-mcp",
         "args": ["--vault", str(vault_path)],
         "tools": {"include": ["search"]},
         "sampling": {"enabled": False},
@@ -49,7 +49,7 @@ def build_hermes_mcp_plan(
     consent: bool,
 ) -> HermesMcpPlan:
     """Return a non-executing plan from explicit caller-provided observations."""
-    fallback = ("agent-recall", str(vault_path))
+    fallback = ("cited-vault-recall", str(vault_path))
     entry = _config_entry(vault_path)
     if not consent:
         return HermesMcpPlan(PlanStatus.CONSENT_REQUIRED, entry, (), fallback)
@@ -68,7 +68,7 @@ def build_hermes_mcp_plan(
             "add",
             SERVER_NAME,
             "--command",
-            "agent-recall-mcp",
+            "cited-vault-recall-mcp",
             "--args",
             "--vault",
             str(vault_path),

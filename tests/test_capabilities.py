@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from agent_recall.capabilities import (
+from cited_vault_recall.capabilities import (
     RetrievalMode,
     TransportMode,
     choose_retrieval_mode,

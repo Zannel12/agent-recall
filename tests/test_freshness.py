@@ -4,7 +4,7 @@ import json
 import unittest
 from pathlib import Path
 
-from agent_recall.freshness import EvidenceRecord, EvidenceStatus, classify_evidence
+from cited_vault_recall.freshness import EvidenceRecord, EvidenceStatus, classify_evidence
 
 
 class FreshnessTests(unittest.TestCase):

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Zannel12/agent-recall/protocol/v1/search-response.schema.json",
-  "title": "Agent Recall search response",
+  "title": "Cited Vault Recall search response",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "query", "hits", "diagnostics"],
