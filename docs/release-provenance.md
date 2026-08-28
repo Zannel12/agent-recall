@@ -2,7 +2,7 @@
 
 ## Release channel and authorization
 
-Agent Recall releases are **GitHub-only**. **No PyPI upload** is permitted while the `agent-recall` distribution-name collision recorded in ADR-0002 remains unresolved. A release needs a separate explicit release decision; this policy is not release authorization.
+Cited Vault Recall releases are **GitHub-only**. **No PyPI upload** occurs unless the final, separately approved publication point is selected after an immediate target-registry check. A release needs a separate explicit release decision; this policy is not release authorization.
 
 A release tag must match the version in `pyproject.toml` (for example `v0.1.0` for `0.1.0`) and must point to the reviewed commit range.
 

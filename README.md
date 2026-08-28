@@ -59,6 +59,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - Security and privacy: [SECURITY.md](SECURITY.md)
 - Offline dependency/action declaration inventory: [supply-chain inventory](docs/supply-chain-inventory.md)
 - Local readiness versus final user-approved publication gates: [release readiness](docs/release-readiness.md)
+- Unpublished local wheel/sdist checksum procedure: [offline release candidate artifacts](docs/offline-release-candidate-artifacts.md)
 - Tested package-identity migration inventory: [package migration manifest](docs/package-migration-manifest.md)
 - Public naming, migration, and deprecation boundary: [migration-and-deprecation](docs/migration-and-deprecation.md)
 - Planned memory transfer protocol: [MEMORY-TRANSFER.md](MEMORY-TRANSFER.md)
