@@ -18,7 +18,7 @@ This page is a bounded readiness assessment for Agent Recall. It separates compl
 | Release-candidate artifact/checksum proof | `NOT_READY` | No reviewed release-candidate artifact set is designated. | Complete roadmap A4 locally. |
 | Semantic/vector decision gate | `NOT_READY` | ADR-0001 defers optional semantic retrieval pending reproducible evidence. | Complete roadmap A5; do not acquire a model or add dependencies yet. |
 | Real-host procedure packs | `NOT_READY` | Existing host information is documentation-only or synthetic protocol evidence. | Complete roadmap A6 without configuring any host. |
-| Production-evidence definition | `NOT_READY` | No deployment target/support boundary is defined. | Complete roadmap A7 without deploying anything. |
+| Production-evidence definition | `READY` | Checked-in policy defines owner, environment, rollback, privacy boundary, observability, evidence retention, and rejection conditions; it selects no target. | Keep deployment evidence blocked until the final separately approved procedure. |
 
 ## Final approval gates
 

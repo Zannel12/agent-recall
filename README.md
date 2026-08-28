@@ -65,6 +65,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - Planned memory transfer protocol: [MEMORY-TRANSFER.md](MEMORY-TRANSFER.md)
 - Dense retrieval decision: [ADR-0001](docs/adr/0001-defer-optional-dense-retrieval.md)
 - Machine-readable semantic/vector decision gate: [semantic retrieval gate](docs/semantic-retrieval-gate.md)
+- Production claim threshold without deployment: [production-evidence policy](docs/production-evidence.md)
 
 ## Status
 
