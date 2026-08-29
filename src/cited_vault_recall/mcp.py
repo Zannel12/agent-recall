@@ -10,7 +10,7 @@ from .core import MAX_LIMIT, RecallError, error_payload, follow_evidence, search
 
 
 SERVER_NAME = "cited-vault-recall"
-SERVER_VERSION = "0.2.0.dev0"
+SERVER_VERSION = "0.2.0"
 
 
 class McpSearch:

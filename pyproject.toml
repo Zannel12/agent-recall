@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cited-vault-recall"
-version = "0.2.0.dev0"
+version = "0.2.0"
 description = "Cited, scoped retrieval from local Markdown vaults for AI agents."
 readme = "README.md"
 requires-python = ">=3.10"

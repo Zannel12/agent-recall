@@ -2,7 +2,7 @@
 
 ## Current status
 
-Cited Vault Recall is at `0.2.0.dev0`, an unreleased development scope. The local ADR-0002 package/import/console migration is implemented; this policy performs **no release, tag, publication**, repository rename, package upload, or automatic migration for downstream users.
+Cited Vault Recall is at `0.2.0`, an untagged, unpublished release-candidate scope. The local ADR-0002 package/import/console migration is implemented; this policy performs **no release, tag, publication**, repository rename, package upload, or automatic migration for downstream users.
 
 The current local identity is **Cited Vault Recall** with distribution, import, and primary executable names `cited-vault-recall`, `cited_vault_recall`, and `cited-vault-recall`. The paired local stdio MCP executable is `cited-vault-recall-mcp` under the migration manifest decision. Registry availability is deliberately unknown until the immediate, separately approved pre-publication registry check.
 

@@ -2,7 +2,7 @@
 
 **Status:** Integration-tested (synthetic-only; not Production-tested)
 **Host verified:** Hermes Agent v0.20.5, 2026-08-29
-**Product:** Cited Vault Recall `0.2.0.dev0`
+**Product:** Cited Vault Recall `0.2.0` (untagged, unpublished release candidate)
 
 ## Scope
 

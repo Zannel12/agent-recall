@@ -28,7 +28,7 @@ class ReleaseCandidateArtifactTests(unittest.TestCase):
             manifest = json.loads((output / "release-candidate-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual("1.0", manifest["schema_version"])
             self.assertEqual("cited-vault-recall", manifest["package"])
-            self.assertEqual("0.2.0.dev0", manifest["version"])
+            self.assertEqual("0.2.0", manifest["version"])
             self.assertTrue(manifest["unpublished"])
             artifacts = manifest["artifacts"]
             self.assertEqual(2, len(artifacts))

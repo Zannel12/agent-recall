@@ -42,7 +42,7 @@ class SpdxSbomTests(unittest.TestCase):
             self.assertEqual("CC0-1.0", payload["dataLicense"])
             self.assertEqual("2026-08-28T00:00:00Z", payload["creationInfo"]["created"])
             self.assertEqual("cited-vault-recall", payload["packages"][0]["name"])
-            self.assertEqual("0.2.0.dev0", payload["packages"][0]["versionInfo"])
+            self.assertEqual("0.2.0", payload["packages"][0]["versionInfo"])
             self.assertIn("unpublished", payload["packages"][0]["comment"])
             files = {item["fileName"]: item for item in payload["files"]}
             manifest = json.loads((output / "release-candidate-manifest.json").read_text(encoding="utf-8"))

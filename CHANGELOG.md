@@ -2,9 +2,9 @@
 
 All notable changes to Agent Recall are documented here.
 
-## [0.2.0] — Unreleased
+## [0.2.0] — Release candidate, untagged
 
-This scope is represented by package version `0.2.0.dev0`. It is **not** a GitHub Release or tag and has not been published to a package registry.
+This release candidate is represented by package version `0.2.0`. It is **not** a GitHub Release or tag and has not been published to a package registry.
 
 ### Added
 
@@ -19,11 +19,11 @@ This scope is represented by package version `0.2.0.dev0`. It is **not** a GitHu
 ### Changed
 
 - MCP, CLI, core, and public documentation share a `1`–`50` result-limit contract.
-- The package metadata now declares the current unreleased development version as `0.2.0.dev0`.
+- The package metadata now declares the untagged, unpublished release-candidate version `0.2.0`.
 
 ### Still not a release
 
-- No GitHub Release, tag, registry publication, SBOM, provenance attestation, or release artifact has been created.
+- No GitHub Release, tag, or registry publication has been created. The historical C6a SBOM and C6b provenance attestation apply only to earlier `0.2.0.dev0` artifacts, not this candidate's future exact artifacts.
 - Host integrations remain bounded and unproven beyond synthetic/local tests; the compatibility matrix does not claim host integration certification.
 
 ## [0.1.0] — 2026-08-21

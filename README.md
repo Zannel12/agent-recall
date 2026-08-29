@@ -74,12 +74,12 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 
 ## Status
 
-`0.2.0.dev0` is the current development package version for the unreleased `0.2.0` scope. No GitHub Release or tag exists for it. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
+`0.2.0` is the current untagged, unpublished release-candidate package version. No GitHub Release or tag exists for it. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
 
 ## Evidence and current limits
 
 - **Local CLI:** covered by the public Python 3.10–3.13 test workflow, including an installed-package demo and a separate clean-install smoke job.
 - **Retrieval evaluation:** versioned synthetic retrieval, exact-date, and abstention scenarios are documented in [benchmarks/evaluation](benchmarks/evaluation/README.md).
-- **Host support:** the public compatibility matrix distinguishes local tests from hosts that are **not integration-tested**: [compatibility](docs/compatibility.md).
-- **Hermes MCP:** only a non-mutating, caller-supplied configuration-plan contract exists; no Hermes host is configured or connected: [adapter plan](docs/hermes-mcp-adapter-plan.md).
-- **Release evidence:** GitHub-only release requirements are documented in [release provenance](docs/release-provenance.md). No GitHub Release, package registry publication, SBOM, or provenance attestation has been created yet.
+- **Host support:** the public compatibility matrix distinguishes local tests from documentation-only hosts; Hermes alone is **Integration-tested** on a synthetic vault: [compatibility](docs/compatibility.md).
+- **Hermes MCP:** a temporary, synthetic-vault local stdio integration reached `Integration-tested` and was removed after verification; it is not production evidence: [integration evidence](docs/hermes-integration-evidence.md).
+- **Release evidence:** GitHub-only release requirements are documented in [release provenance](docs/release-provenance.md). A historical SBOM and one provenance attestation exist for earlier `0.2.0.dev0` artifacts; they do not cover this untagged `0.2.0` candidate. No GitHub Release or package registry publication exists.

@@ -13,7 +13,7 @@ This page is a bounded readiness assessment for Agent Recall. It separates compl
 | Gate | Status | Current evidence or blocker | Next allowed step |
 |---|---|---|---|
 | Local regression and clean-install evidence | `READY` | The repository has focused/full regression tests and CI evidence; the exact count and run are recorded per completed roadmap point. | Re-run against the next reviewed commit. |
-| Unreleased package state | `READY` | Metadata remains `0.2.0.dev0`; no GitHub tag, GitHub Release, or registry publication exists. | Keep unreleased until final gates are approved. |
+| Untagged, unpublished release-candidate package state | `READY` | Metadata is `0.2.0`; no GitHub tag, GitHub Release, or registry publication exists. | Rebuild exact candidate artifacts from the approved release commit before each final external gate. |
 | Publishable local package identity | `READY` | Local distribution/import/executables now use the non-legacy ADR-0002 identity; registry availability is deliberately unknown. | Complete A4 locally, then re-check the registry only in the separately approved final publication procedure. |
 | Release-candidate artifact/checksum proof | `NOT_READY` | No reviewed release-candidate artifact set is designated. | Complete roadmap A4 locally. |
 | Semantic/vector decision gate | `NOT_READY` | ADR-0001 defers optional semantic retrieval pending reproducible evidence. | Complete roadmap A5; do not acquire a model or add dependencies yet. |

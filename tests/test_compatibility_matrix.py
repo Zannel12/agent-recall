@@ -17,7 +17,7 @@ class CompatibilityMatrixTests(unittest.TestCase):
         self.assertIn("Integration-tested", text)
         self.assertIn("Real Hermes synthetic-vault MCP invocation passed", text)
         self.assertIn("Hermes Agent v0.20.5", text)
-        self.assertIn("Local tests only", text)
+        self.assertIn("Cited Vault Recall `0.2.0`; tests checked 2026-08-29", text)
         self.assertIn("https://developers.openai.com/codex/mcp", text)
         self.assertIn("https://code.claude.com/docs/en/mcp-quickstart", text)
         self.assertIn("https://cursor.com/docs/mcp", text)
