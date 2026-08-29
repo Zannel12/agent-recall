@@ -14,14 +14,16 @@ class CompatibilityMatrixTests(unittest.TestCase):
         for field in ("Supported mode", "Data location", "Permission surface", "Evidence level", "Host version / source checked", "Test status"):
             self.assertIn(field, text)
         self.assertEqual(4, text.count("Not integration-tested"))
-        self.assertIn("Synthetic MCP protocol E2E; real Hermes not integration-tested", text)
+        self.assertIn("Integration-tested", text)
+        self.assertIn("Real Hermes synthetic-vault MCP invocation passed", text)
+        self.assertIn("Hermes Agent v0.20.5", text)
         self.assertIn("Local tests only", text)
         self.assertIn("https://developers.openai.com/codex/mcp", text)
         self.assertIn("https://code.claude.com/docs/en/mcp-quickstart", text)
         self.assertIn("https://cursor.com/docs/mcp", text)
         self.assertIn("https://hermes-agent.nousresearch.com/docs/guides/use-mcp-with-hermes", text)
         self.assertIn("https://docs.openclaw.ai/cli/mcp", text)
-        self.assertIn("No host was installed, configured, authenticated, or connected", text)
+        self.assertIn("Only Hermes has direct synthetic-host evidence", text)
 
 
 if __name__ == "__main__":

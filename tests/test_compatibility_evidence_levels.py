@@ -15,7 +15,8 @@ class CompatibilityEvidenceLevelsTests(unittest.TestCase):
         for level in ("Documented", "Smoke-tested", "Integration-tested", "Production-tested"):
             self.assertIn(f"**{level}**", text)
         self.assertIn("Host version / source checked", text)
-        self.assertEqual(5, text.count("version not recorded; docs checked 2026-08-28"))
+        self.assertEqual(4, text.count("version not recorded; docs checked 2026-08-28"))
+        self.assertIn("Hermes Agent v0.20.5; verified 2026-08-29", text)
         self.assertIn("smoke-tested", text.lower())
         self.assertNotIn("production-tested evidence exists", text.lower())
 
@@ -25,7 +26,7 @@ class CompatibilityEvidenceLevelsTests(unittest.TestCase):
         self.assertIn("https://code.claude.com/docs/en/mcp-quickstart", text)
         self.assertIn("https://cursor.com/docs/mcp", text)
         self.assertIn("documentation-only host evidence", text)
-        self.assertIn("No host was installed, configured, authenticated, or connected", text)
+        self.assertIn("Only Hermes has direct synthetic-host evidence", text)
 
 
 if __name__ == "__main__":
