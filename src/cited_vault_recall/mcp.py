@@ -86,8 +86,17 @@ def handle_request(search: McpSearch, request: dict[str, object]) -> dict[str, o
         params = request.get("params")
         if not isinstance(params, dict) or params.get("name") != "search" or not isinstance(params.get("arguments"), dict):
             return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32602, "message": "Invalid params"}}
-        return {"jsonrpc": "2.0", "id": request_id, "result": search.call(params["arguments"])}
+        return {"jsonrpc": "2.0", "id": request_id, "result": tool_result(search.call(params["arguments"]))}
     return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32601, "message": "Method not found"}}
+
+
+def tool_result(payload: dict[str, object]) -> dict[str, object]:
+    """Encode a bounded search response in the MCP ToolResult content envelope."""
+    return {
+        "content": [{"type": "text", "text": json.dumps(payload, sort_keys=True)}],
+        "isError": "code" in payload,
+    }
+
 
 def tools_list() -> dict[str, object]:
     """Return the only capability exposed by the local stdio prototype."""

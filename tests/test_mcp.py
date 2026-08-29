@@ -48,6 +48,20 @@ class McpContractTests(unittest.TestCase):
         self.assertEqual(1, response["id"])
         self.assertEqual(["search"], [tool["name"] for tool in response["result"]["tools"]])
 
+    def test_json_rpc_tools_call_returns_standard_text_content(self):
+        with tempfile.TemporaryDirectory() as directory:
+            vault = Path(directory)
+            (vault / "privacy.md").write_text("# Privacy\nlocal only retrieval", encoding="utf-8")
+            response = handle_request(
+                McpSearch(vault),
+                {"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "search", "arguments": {"query": "privacy"}}},
+            )
+        self.assertFalse(response["result"]["isError"])
+        content = response["result"]["content"]
+        self.assertEqual("text", content[0]["type"])
+        payload = json.loads(content[0]["text"])
+        self.assertEqual("privacy.md", payload["hits"][0]["relative_path"])
+
     def test_bound_search_returns_relative_citation_without_caller_vault(self):
         with tempfile.TemporaryDirectory() as directory:
             vault = Path(directory)

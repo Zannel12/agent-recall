@@ -73,7 +73,7 @@ class CleanInstallEndToEndSmokeTests(unittest.TestCase):
                         "params": {"name": "search", "arguments": {"query": "privacy", "limit": 1}},
                     },
                 )
-                result = searched["result"]
+                result = json.loads(searched["result"]["content"][0]["text"])
                 self.assertEqual("privacy", result["query"])
                 self.assertEqual("privacy.md", result["hits"][0]["relative_path"])
             finally:

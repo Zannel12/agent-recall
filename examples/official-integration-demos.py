@@ -57,10 +57,11 @@ def mcp_demo() -> dict[str, object]:
             server,
             {"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "search", "arguments": {"query": "privacy", "limit": 1}}},
         )
+        result = json.loads(search["result"]["content"][0]["text"])
         return {
             "tools": [tool["name"] for tool in listing["result"]["tools"]],
-            "query": search["result"]["query"],
-            "relative_path": search["result"]["hits"][0]["relative_path"],
+            "query": result["query"],
+            "relative_path": result["hits"][0]["relative_path"],
         }
     finally:
         server.terminate()

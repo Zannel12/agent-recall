@@ -57,7 +57,8 @@ class McpProtocolEndToEndTests(unittest.TestCase):
                         "params": {"name": "search", "arguments": {"query": "privacy", "limit": 1}},
                     },
                 )
-                hit = search["result"]["hits"][0]
+                payload = json.loads(search["result"]["content"][0]["text"])
+                hit = payload["hits"][0]
                 self.assertEqual("privacy.md", hit["relative_path"])
                 self.assertNotIn(str(vault), json.dumps(search))
                 read = self._request(
