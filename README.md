@@ -68,6 +68,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - Production claim threshold without deployment: [production-evidence policy](docs/production-evidence.md)
 - Read-only candidate/secret scope check: [candidate scope audit](docs/candidate-scope-audit.md)
 - One-shot external-action safety card: [approval packet](docs/external-action-approval-packet.md)
+- Verified GitHub Actions SHA pins: [supply-chain pinning](docs/supply-chain-pinning.md)
 
 ## Status
 

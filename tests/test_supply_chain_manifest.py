@@ -14,7 +14,7 @@ SCRIPT = ROOT / "tools" / "verify_supply_chain_manifest.py"
 
 @unittest.skipUnless(sys.version_info >= (3, 11), "supply-chain verifier requires Python 3.11+ tomllib")
 class SupplyChainManifestTests(unittest.TestCase):
-    def test_checked_in_inventory_is_current_and_describes_unpinned_baseline_honestly(self):
+    def test_checked_in_inventory_is_current_and_describes_pinned_workflow_baseline(self):
         manifest = ROOT / "supply-chain-manifest.json"
         result = subprocess.run([sys.executable, str(SCRIPT), "--root", str(ROOT), "--output", str(manifest), "--check"], text=True, capture_output=True)
 
@@ -31,8 +31,8 @@ class SupplyChainManifestTests(unittest.TestCase):
         actions = [item for workflow in payload["workflows"] for item in workflow["uses"]]
         self.assertEqual(
             [
-                ("actions/checkout@v4", "mutable_or_unverified_reference"),
-                ("actions/setup-python@v5", "mutable_or_unverified_reference"),
+                ("actions/checkout@11d5960a326750d5838078e36cf38b85af677262", "full_sha_format_unverified"),
+                ("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", "full_sha_format_unverified"),
             ],
             sorted(set((item["reference"], item["classification"]) for item in actions)),
         )
