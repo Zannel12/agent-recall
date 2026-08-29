@@ -70,6 +70,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - One-shot external-action safety card: [approval packet](docs/external-action-approval-packet.md)
 - Verified GitHub Actions SHA pins: [supply-chain pinning](docs/supply-chain-pinning.md)
 - Exact-artifact SPDX SBOM procedure: [offline SPDX SBOM](docs/offline-spdx-sbom.md)
+- One-shot provenance-attestation controls: [C6b provenance attestation](docs/c6b-provenance-attestation.md)
 
 ## Status
 
