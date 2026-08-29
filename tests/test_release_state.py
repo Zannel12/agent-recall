@@ -24,6 +24,14 @@ class ReleaseStateTests(unittest.TestCase):
         self.assertIn("No GitHub Release or tag", readme)
         self.assertIn("untagged, unpublished release-candidate package version", readme)
         self.assertIn("earlier `0.2.0.dev0` artifacts", readme)
+        current_notes = changelog.split("## [0.1.0]", 1)[0]
+        self.assertIn("All notable changes to Cited Vault Recall", changelog)
+        self.assertIn("`cited-vault-recall-mcp --vault <vault>`", current_notes)
+        self.assertIn("`cited-vault-recall <vault> <query>`", current_notes)
+        self.assertIn("Integration-tested", current_notes)
+        self.assertNotIn("`agent-recall-mcp --vault <vault>`", current_notes)
+        self.assertNotIn("`agent-recall <vault> <query>`", current_notes)
+        self.assertNotIn("Host integrations remain bounded and unproven", current_notes)
         self.assertIn("earlier `0.2.0.dev0` artifacts", changelog)
 
 

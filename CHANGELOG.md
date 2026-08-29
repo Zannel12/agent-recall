@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Agent Recall are documented here.
+All notable changes to Cited Vault Recall are documented here.
 
 ## [0.2.0] — Release candidate, untagged
 
@@ -8,9 +8,9 @@ This release candidate is represented by package version `0.2.0`. It is **not** 
 
 ### Added
 
-- Local stdio MCP entry point: `agent-recall-mcp --vault <vault>`, with a bounded `search` tool and identifier-scoped evidence reads.
-- Explicit CLI operations for `doctor` and `reindex`, plus a canonical positional search contract: `agent-recall <vault> <query>`.
-- A pure, non-executing Hermes MCP configuration-plan generator; no real Hermes configuration or host connection is included.
+- Local stdio MCP entry point: `cited-vault-recall-mcp --vault <vault>`, with a bounded `search` tool and identifier-scoped evidence reads.
+- Explicit CLI operations for `doctor` and `reindex`, plus a canonical positional search contract: `cited-vault-recall <vault> <query>`.
+- A bounded synthetic-vault Hermes local stdio MCP integration, verified with only `search` exposed, a relative citation, and teardown of temporary state.
 - Derived-index integrity checks, explicit lifecycle/permission boundaries, aggregate diagnostics, and synthetic retrieval evaluation fixtures.
 - Installation, built-distribution, MCP-entry-point, public-command-contract, Python 3.10 compatibility, and clean end-to-end smoke tests.
 - Public contribution surface: code of conduct, issue/PR templates, contributor privacy guidance, and local tool-state ignore rules.
@@ -24,7 +24,7 @@ This release candidate is represented by package version `0.2.0`. It is **not** 
 ### Still not a release
 
 - No GitHub Release, tag, or registry publication has been created. The historical C6a SBOM and C6b provenance attestation apply only to earlier `0.2.0.dev0` artifacts, not this candidate's future exact artifacts.
-- Host integrations remain bounded and unproven beyond synthetic/local tests; the compatibility matrix does not claim host integration certification.
+- Hermes has bounded synthetic-vault `Integration-tested` evidence only; Codex, Claude Code, Cursor, and OpenClaw remain documentation-only, and no host is Production-tested.
 
 ## [0.1.0] — 2026-08-21
 
