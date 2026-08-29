@@ -1,6 +1,6 @@
-# One-shot C6b provenance attestation
+# C6b provenance-attestation evidence
 
-This repository contains a deliberately temporary, manual-only GitHub Actions workflow for the user-approved C6b provenance attestation. GitHub documents artifact attestations as provenance evidence and requires `contents: read`, `attestations: write`, and `id-token: write` for the attesting job.[1]
+This document records the deliberately temporary, manual-only GitHub Actions workflow used for the user-approved C6b provenance attestation. GitHub documents artifact attestations as provenance evidence and requires `contents: read`, `attestations: write`, and `id-token: write` for the attesting job.[1]
 
 ## Narrow scope
 
@@ -17,11 +17,17 @@ The workflow:
 
 All third-party Actions are fixed to full commits. The official `v4` tags resolve to the pinned `actions/attest`, `upload-artifact`, and `download-artifact` commits recorded in the workflow.[2][3][4]
 
-## Boundary and cleanup
+## Result and cleanup
 
-A successful run creates one durable GitHub provenance claim for the two exact unpublished artifacts. It does not create a tag, GitHub Release, release asset, registry upload, PyPI publication, deployment, or SBOM attestation. Deleting the one-day transfer artifact does not revoke an attestation.
+The workflow ran once and generated the GitHub provenance attestation at:
 
-After the single verified run, the temporary workflow must be removed from the default branch so it cannot be dispatched again without a new explicit approval and a new reviewed workflow.
+```text
+https://github.com/Zannel12/agent-recall/attestations/43824073
+```
+
+It covered exactly the two unpublished artifacts selected by the reviewed checksum manifest. The temporary workflow was removed from the default branch immediately after successful run/read-back, so it cannot be dispatched again without a new explicit approval and a new reviewed workflow. Deleting the one-day transfer artifact does not revoke the attestation.
+
+The attestation does not create a tag, GitHub Release, release asset, registry upload, PyPI publication, deployment, or SBOM attestation.
 
 ## Sources
 

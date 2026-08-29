@@ -27,9 +27,6 @@ class WorkflowShaPinningTests(unittest.TestCase):
             {
                 (f"actions/checkout@{CHECKOUT_SHA}", "full_sha_format_unverified"),
                 (f"actions/setup-python@{SETUP_PYTHON_SHA}", "full_sha_format_unverified"),
-                ("actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02", "full_sha_format_unverified"),
-                ("actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093", "full_sha_format_unverified"),
-                ("actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6", "full_sha_format_unverified"),
             },
             {(item["reference"], item["classification"]) for item in uses},
         )
