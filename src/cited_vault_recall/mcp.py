@@ -9,6 +9,10 @@ from typing import TextIO
 from .core import MAX_LIMIT, RecallError, error_payload, follow_evidence, search_response_payload, search_vault
 
 
+SERVER_NAME = "cited-vault-recall"
+SERVER_VERSION = "0.2.0.dev0"
+
+
 class McpSearch:
     """A search-only adapter permanently bound to one explicit vault."""
 
@@ -44,17 +48,33 @@ def serve(search: McpSearch, incoming: TextIO, outgoing: TextIO) -> None:
         try:
             request = json.loads(line)
         except json.JSONDecodeError:
-            response = {"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}}
+            response: dict[str, object] | None = {"jsonrpc": "2.0", "id": None, "error": {"code": -32700, "message": "Parse error"}}
         else:
             response = handle_request(search, request) if isinstance(request, dict) else {"jsonrpc": "2.0", "id": None, "error": {"code": -32600, "message": "Invalid Request"}}
-        outgoing.write(json.dumps(response, sort_keys=True) + "\n")
-        outgoing.flush()
+        if response is not None:
+            outgoing.write(json.dumps(response, sort_keys=True) + "\n")
+            outgoing.flush()
 
 
-def handle_request(search: McpSearch, request: dict[str, object]) -> dict[str, object]:
+def handle_request(search: McpSearch, request: dict[str, object]) -> dict[str, object] | None:
     request_id = request.get("id")
     if request.get("jsonrpc") != "2.0" or not isinstance(request.get("method"), str):
         return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32600, "message": "Invalid Request"}}
+    if request["method"] == "initialize":
+        params = request.get("params")
+        if not isinstance(params, dict) or not isinstance(params.get("protocolVersion"), str) or not params["protocolVersion"]:
+            return {"jsonrpc": "2.0", "id": request_id, "error": {"code": -32602, "message": "Invalid params"}}
+        return {
+            "jsonrpc": "2.0",
+            "id": request_id,
+            "result": {
+                "protocolVersion": params["protocolVersion"],
+                "capabilities": {"tools": {}},
+                "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
+            },
+        }
+    if request["method"] == "notifications/initialized" and "id" not in request:
+        return None
     if request["method"] == "tools/list":
         return {"jsonrpc": "2.0", "id": request_id, "result": tools_list()}
     if request["method"] == "resources/read":

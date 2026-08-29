@@ -30,7 +30,23 @@ class McpProtocolEndToEndTests(unittest.TestCase):
                 text=True,
             )
             try:
-                listing = self._request(server, {"jsonrpc": "2.0", "id": 1, "method": "tools/list"})
+                initialize = self._request(
+                    server,
+                    {
+                        "jsonrpc": "2.0",
+                        "id": 1,
+                        "method": "initialize",
+                        "params": {
+                            "protocolVersion": "2025-06-18",
+                            "capabilities": {},
+                            "clientInfo": {"name": "synthetic-client", "version": "1.0"},
+                        },
+                    },
+                )
+                self.assertEqual("2025-06-18", initialize["result"]["protocolVersion"])
+                self.assertEqual({"tools": {}}, initialize["result"]["capabilities"])
+                self._notify(server, {"jsonrpc": "2.0", "method": "notifications/initialized"})
+                listing = self._request(server, {"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
                 self.assertEqual(["search"], [tool["name"] for tool in listing["result"]["tools"]])
                 search = self._request(
                     server,
@@ -59,6 +75,11 @@ class McpProtocolEndToEndTests(unittest.TestCase):
                 server.stdin.close()
                 server.stdout.close()
                 server.stderr.close()
+
+    def _notify(self, server: subprocess.Popen[str], notification: dict[str, object]) -> None:
+        assert server.stdin is not None
+        server.stdin.write(json.dumps(notification) + "\n")
+        server.stdin.flush()
 
     def _request(self, server: subprocess.Popen[str], request: dict[str, object]) -> dict[str, Any]:
         assert server.stdin is not None

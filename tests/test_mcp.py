@@ -18,6 +18,31 @@ class McpContractTests(unittest.TestCase):
         serve(McpSearch(Path(".")), incoming, outgoing)
         self.assertEqual(1, json.loads(outgoing.getvalue())["id"])
 
+    def test_initialize_advertises_only_the_search_tool_capability(self):
+        response = handle_request(
+            McpSearch(Path(".")),
+            {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "initialize",
+                "params": {
+                    "protocolVersion": "2025-06-18",
+                    "capabilities": {},
+                    "clientInfo": {"name": "synthetic-client", "version": "1.0"},
+                },
+            },
+        )
+        self.assertEqual(1, response["id"])
+        self.assertEqual("2025-06-18", response["result"]["protocolVersion"])
+        self.assertEqual({"tools": {}}, response["result"]["capabilities"])
+        self.assertEqual("cited-vault-recall", response["result"]["serverInfo"]["name"])
+
+    def test_initialized_notification_emits_no_json_rpc_response(self):
+        incoming = io.StringIO(json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}) + "\n")
+        outgoing = io.StringIO()
+        serve(McpSearch(Path(".")), incoming, outgoing)
+        self.assertEqual("", outgoing.getvalue())
+
     def test_json_rpc_tools_list_is_the_only_advertised_capability(self):
         response = handle_request(McpSearch(Path(".")), {"jsonrpc": "2.0", "id": 1, "method": "tools/list"})
         self.assertEqual(1, response["id"])
