@@ -37,7 +37,7 @@ cited-vault-recall doctor --config recall.json --json
 # or: cited-vault-recall doctor --vault /absolute/path/to/your/vault --json
 ```
 
-`doctor --json` reports a bounded `READY`/`NOT_READY` status plus stable codes for the local executable, explicit vault readability, ignore policy, and a local search probe. It reports only aggregate counts, does not search parent directories, home directories, or agent state, and never exposes an absolute vault path.
+`doctor --json` reports a bounded `READY`/`NOT_READY` status plus stable codes for the local executable, explicit vault readability, ignore policy, and a local search probe. For `VAULT_NOT_FOUND`, the vault object includes the path-free `next_step` value `SELECT_EXISTING_DIRECTORY`; choose an existing vault directory and pass it explicitly. It reports only aggregate counts, does not search parent directories, home directories, or agent state, and never exposes an absolute vault path.
 
 ## What it does / does not do
 

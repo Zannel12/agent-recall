@@ -28,7 +28,13 @@ def _doctor_payload(configured_vault: Path | None) -> dict[str, object]:
         return {
             "status": "NOT_READY",
             "install": install,
-            "vault": {"configured": True, "accessible": False, "readable": False, "code": "VAULT_NOT_FOUND"},
+            "vault": {
+                "configured": True,
+                "accessible": False,
+                "readable": False,
+                "code": "VAULT_NOT_FOUND",
+                "next_step": "SELECT_EXISTING_DIRECTORY",
+            },
             "ignore": {"configured": False, "code": "NOT_RUN", "skipped_files": 0},
             "search": {"code": "NOT_RUN", "hits": 0},
             "local_state": local_state,

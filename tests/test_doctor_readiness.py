@@ -49,6 +49,7 @@ class DoctorReadinessTests(unittest.TestCase):
         payload = json.loads(result.stdout)
         self.assertEqual("NOT_READY", payload["status"])
         self.assertEqual("VAULT_NOT_FOUND", payload["vault"]["code"])
+        self.assertEqual("SELECT_EXISTING_DIRECTORY", payload["vault"]["next_step"])
         self.assertEqual("NOT_RUN", payload["ignore"]["code"])
         self.assertEqual("NOT_RUN", payload["search"]["code"])
         self.assertFalse(payload["local_state"]["discovered"])
