@@ -26,7 +26,7 @@ Before a future GitHub release, the release operator must record:
 6. review of `UPSTREAMS.md` and `ADAPTATIONS.md`. Copied/adapted code must have exact source path, revision, license, destination, and modification record;
 7. GitHub release asset upload and a read-back verification of tag, assets, checksums, SBOM, and attestation.
 
-The SBOM and provenance attestation are required future release assets. They are not claims about current CI.
+The SBOM and provenance attestation are required future release assets. They are not claims about current CI. For the current public release, see the [v0.2.0 evidence index](releases/0.2.0-evidence.md); it records exact asset hashes and the limits of that evidence.
 
 ## Non-action guarantee
 
