@@ -2,9 +2,9 @@
 
 All notable changes to Cited Vault Recall are documented here.
 
-## [0.2.0] — Release candidate, untagged
+## [0.2.0] — 2026-08-29
 
-This release candidate is represented by package version `0.2.0`. It is **not** a GitHub Release or tag and has not been published to a package registry.
+GitHub Release [`v0.2.0`](https://github.com/Zannel12/agent-recall/releases/tag/v0.2.0) is published for package version `0.2.0`. PyPI publication remains pending.
 
 ### Added
 
@@ -19,11 +19,12 @@ This release candidate is represented by package version `0.2.0`. It is **not** 
 ### Changed
 
 - MCP, CLI, core, and public documentation share a `1`–`50` result-limit contract.
-- The package metadata now declares the untagged, unpublished release-candidate version `0.2.0`.
+- The package metadata declares the published GitHub Release version `0.2.0`.
 
-### Still not a release
+### Release boundaries
 
-- No GitHub Release, tag, or registry publication has been created. The historical C6a SBOM and C6b provenance attestation apply only to earlier `0.2.0.dev0` artifacts, not this candidate's future exact artifacts.
+- The GitHub tag and release are published. PyPI publication remains pending because a non-secret owner-side publishing route has not yet been configured.
+- The historical C6a SBOM and C6b provenance attestation apply only to earlier `0.2.0.dev0` artifacts. The current release assets have their own SPDX SBOM and GitHub provenance attestation.
 - Hermes has bounded synthetic-vault `Integration-tested` evidence only; Codex, Claude Code, Cursor, and OpenClaw remain documentation-only, and no host is Production-tested.
 
 ## [0.1.0] — 2026-08-21

@@ -74,7 +74,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 
 ## Status
 
-`0.2.0` is the current untagged, unpublished release-candidate package version. No GitHub Release or tag exists for it. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
+`0.2.0` is the current published GitHub Release package version: [v0.2.0](https://github.com/Zannel12/agent-recall/releases/tag/v0.2.0). PyPI publication remains pending. See [CHANGELOG.md](CHANGELOG.md) for scope and explicit exclusions. No real vault or personal data belongs in this repository.
 
 ## Evidence and current limits
 
@@ -82,4 +82,4 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - **Retrieval evaluation:** versioned synthetic retrieval, exact-date, and abstention scenarios are documented in [benchmarks/evaluation](benchmarks/evaluation/README.md).
 - **Host support:** the public compatibility matrix distinguishes local tests from documentation-only hosts; Hermes alone is **Integration-tested** on a synthetic vault: [compatibility](docs/compatibility.md).
 - **Hermes MCP:** a temporary, synthetic-vault local stdio integration reached `Integration-tested` and was removed after verification; it is not production evidence: [integration evidence](docs/hermes-integration-evidence.md).
-- **Release evidence:** GitHub-only release requirements are documented in [release provenance](docs/release-provenance.md). A historical SBOM and one provenance attestation exist for earlier `0.2.0.dev0` artifacts; they do not cover this untagged `0.2.0` candidate. No GitHub Release or package registry publication exists.
+- **Release evidence:** [GitHub Release v0.2.0](https://github.com/Zannel12/agent-recall/releases/tag/v0.2.0) includes the wheel, sdist, and SPDX SBOM; the package artifacts have a GitHub provenance attestation. PyPI publication remains pending. Historical `0.2.0.dev0` evidence does not cover the current release assets.

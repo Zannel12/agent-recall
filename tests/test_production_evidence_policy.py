@@ -35,7 +35,7 @@ class ProductionEvidencePolicyTests(unittest.TestCase):
         self.assertIn("No target is selected", text)
         self.assertIn("local-first", text)
         self.assertIn("No row currently reaches this level", compatibility)
-        self.assertIn("production deployment evidence | `BLOCKED`", readiness)
+        self.assertIn("Hosted production deployment | `BLOCKED`", readiness)
 
 
 if __name__ == "__main__":
