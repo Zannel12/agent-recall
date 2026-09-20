@@ -58,6 +58,7 @@ Read **[AGENTS.md](AGENTS.md)** before integrating. The contract is one input (v
 - Upstreams and licenses: [UPSTREAMS.md](UPSTREAMS.md)
 - Security and privacy: [SECURITY.md](SECURITY.md)
 - Public priorities and active product boundaries: [roadmap](docs/roadmap.md) and [decisions](docs/decisions.md)
+- Reproducible synthetic measurement boundaries: [performance envelope](docs/performance-envelope.md)
 - Offline dependency/action declaration inventory: [supply-chain inventory](docs/supply-chain-inventory.md)
 - Local readiness versus final user-approved publication gates: [release readiness](docs/release-readiness.md)
 - Unpublished local wheel/sdist checksum procedure: [offline release candidate artifacts](docs/offline-release-candidate-artifacts.md)
