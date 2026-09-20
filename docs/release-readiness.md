@@ -23,7 +23,7 @@ This page distinguishes verified public-release facts from future publication an
 
 ## Future external-action gates
 
-Every future external mutation remains independently scoped: one action per Goal turn, fresh preflight, exact read-back, and no credentials in chat.
+Every future external mutation remains independently scoped: one action per Goal turn, fresh preflight, exact read-back, and no credentials in chat. The ordered maintainer procedure is documented in the [release checklist](maintainer-release-checklist.md).
 
 | Future action | Current status | Preconditions | Hard stop |
 |---|---|---|---|
