@@ -1,0 +1,40 @@
+# Public decisions
+
+This register captures active public product boundaries. It is intentionally short; implementation details and historical evidence stay in their linked documents.
+
+## D-001 — Sparse lexical retrieval is the shipped default
+
+**Status:** active.
+
+Cited Vault Recall ships transparent local lexical retrieval with relative citations. This preserves a dependency-light, inspectable, offline-by-default baseline.
+
+## D-002 — Semantic/vector/LLM retrieval is `DEFER`
+
+**Status:** active.
+
+The project will not add a dense or hybrid retrieval layer until the privacy-safe evaluation, pinned model provenance, offline acquisition/cache, measured resource comparison, and citation-equivalence requirements in [ADR-0001](adr/0001-defer-optional-dense-retrieval.md) are satisfied. No mandatory model download is accepted now.
+
+## D-003 — Local-first is a product boundary
+
+**Status:** active.
+
+The package requires explicit vault selection and remains read-only and offline by default. It does not add telemetry, cloud synchronization, automatic vault discovery, or automatic vault writes without a separate architecture and security decision.
+
+## D-004 — No hosted deployment is selected
+
+**Status:** active.
+
+Cited Vault Recall is not a hosted production service. A GitHub Release or PyPI package distribution does not establish a service deployment. Any hosted target needs its own design for ownership, rollback, privacy, observability, retention, and support.
+
+## D-005 — PyPI uses a non-secret route or remains unpublished
+
+**Status:** active.
+
+`cited-vault-recall` is not published to PyPI. If publication proceeds, the preferred route is PyPI Trusted Publishing with OIDC and a narrowly reviewed workflow. Tokens, passwords, verification codes, cookies, and browser sessions are never requested or stored in repository automation or chat.
+
+## References
+
+- [Project scope](project-scope.md)
+- [Public roadmap](roadmap.md)
+- [Release readiness](release-readiness.md)
+- [Maintainer release checklist](maintainer-release-checklist.md)
