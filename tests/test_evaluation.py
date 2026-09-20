@@ -22,6 +22,19 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(result["metrics"], baseline["metrics"])
         self.assertEqual(["retrieval", "retrieval", "temporal", "abstention"], [item["kind"] for item in cast(list[dict[str, object]], result["scenarios"])])
 
+    def test_fixture_manifest_binds_synthetic_corpus_scenarios_and_expected_result(self):
+        manifest = json.loads((ROOT / "fixture-manifest.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(manifest["schema_version"], "1.0")
+        self.assertEqual(manifest["dataset"], "synthetic-evaluation-v1")
+        self.assertEqual(manifest["corpus_root"], "corpus")
+        self.assertEqual(manifest["scenarios"], "scenarios.json")
+        self.assertEqual(manifest["baseline"], "baseline.json")
+        self.assertEqual(manifest["result_contract"], "metrics_equal_baseline")
+        self.assertEqual(manifest["network"], "forbidden")
+        self.assertEqual(manifest["models"], "forbidden")
+        self.assertEqual(manifest["personal_vaults"], "forbidden")
+
     def test_comparison_requires_non_regression_and_strict_target_improvement(self):
         baseline = {"retrieval_recall_at_k": 0.8, "retrieval_mrr": 0.7, "retrieval_top_n_hit_rate": 0.7, "temporal_accuracy": 0.6, "abstention_accuracy": 0.9}
         equal = compare_metrics(baseline, baseline, target_metric="retrieval_mrr")

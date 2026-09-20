@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "dataset": "synthetic-evaluation-v1",
+  "corpus_root": "corpus",
+  "scenarios": "scenarios.json",
+  "baseline": "baseline.json",
+  "result_contract": "metrics_equal_baseline",
+  "network": "forbidden",
+  "models": "forbidden",
+  "personal_vaults": "forbidden"
+}

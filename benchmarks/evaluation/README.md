@@ -8,7 +8,7 @@ This checked-in suite is synthetic and local-only. It does not discover or inspe
 - **Temporal:** exact-date accuracy where the query and relevant synthetic Markdown contain the same explicit date token. This is lexical evidence only; it does not claim recency or currentness reasoning.
 - **Abstention:** accuracy for an expected no-hit query. A no-hit result is evaluation behavior, not proof that a real vault lacks a fact.
 
-`scenarios.json` and `baseline.json` have schema version `1.0`. `baseline.json` is the checked-in metric reference for this exact synthetic fixture—not a general quality target. `run_evaluation(...)` returns fixture/retriever labels, per-scenario result paths, and aggregate metrics.
+`scenarios.json` and `baseline.json` have schema version `1.0`. `fixture-manifest.json` binds the corpus directory, scenario file, expected baseline, and the synthetic-only execution boundary. `baseline.json` is the checked-in metric reference for this exact synthetic fixture—not a general quality target. `run_evaluation(...)` returns fixture/retriever labels, per-scenario result paths, and aggregate metrics.
 
 ## Change decision gate
 
@@ -20,4 +20,4 @@ This checked-in suite is synthetic and local-only. It does not discover or inspe
 PYTHONPATH=src python3 -m unittest tests.test_evaluation -v
 ```
 
-The suite establishes a reproducible synthetic gate, not quality claims for a real user vault or a semantic/hybrid retriever.
+The suite establishes a reproducible synthetic gate, not quality claims for a real user vault or a semantic/hybrid retriever. The fixture manifest forbids network access, model loading, and personal vaults; the exact expected result is `metrics_equal_baseline` for this versioned corpus.
