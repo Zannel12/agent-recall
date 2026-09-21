@@ -13,6 +13,17 @@ class CiWorkflowContractTests(unittest.TestCase):
         self.assertIn("  push:\n  pull_request:\n", workflow)
         self.assertIn('python-version: ["3.10", "3.11", "3.12", "3.13"]', workflow)
 
+    def test_ci_has_a_fork_safe_read_only_pull_request_boundary(self):
+        workflow = WORKFLOW.read_text(encoding="utf-8")
+
+        self.assertIn("  pull_request:\n", workflow)
+        self.assertNotIn("pull_request_target:", workflow)
+        self.assertIn("permissions:\n  contents: read\n", workflow)
+        self.assertNotIn("contents: write", workflow)
+        self.assertNotIn("pull-requests: read", workflow)
+        self.assertEqual(2, workflow.count("persist-credentials: false"))
+        self.assertNotIn("secrets.", workflow)
+
     def test_ci_has_a_separate_clean_install_smoke_job(self):
         workflow = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("  smoke:\n", workflow)
