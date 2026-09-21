@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import tomllib
 import unittest
 from pathlib import Path
 
@@ -10,11 +9,11 @@ ROOT = Path(__file__).parents[1]
 
 class DependencyPolicyTests(unittest.TestCase):
     def test_runtime_dependency_baseline_is_empty_and_policy_requires_explicit_review(self):
-        project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+        pyproject = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
         policy = (ROOT / "docs" / "dependency-policy.md").read_text(encoding="utf-8")
 
-        self.assertEqual([], project.get("dependencies", []))
-        self.assertNotIn("optional-dependencies", project)
+        self.assertNotIn("dependencies =", pyproject)
+        self.assertNotIn("[project.optional-dependencies]", pyproject)
         for required in (
             "Explicit dependency review",
             "network-capable runtime dependency",
