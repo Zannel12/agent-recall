@@ -31,6 +31,26 @@ class PublicRoadmapAndDecisionsTests(unittest.TestCase):
         ):
             self.assertIn(required, decisions)
 
+    def test_execution_queue_distinguishes_completed_autonomous_work_from_owner_blockers(self):
+        roadmap = (ROOT / "docs" / "roadmap.md").read_text(encoding="utf-8")
+        decisions = (ROOT / "docs" / "decisions.md").read_text(encoding="utf-8")
+
+        for required in (
+            "Autonomous OSS foundation (Tasks 1–13) is complete",
+            "4 / 18 = 22.2%",
+            "Task 14",
+            "PyPI Trusted Publishing",
+            "No hosted deployment is selected",
+        ):
+            self.assertIn(required, roadmap)
+        for required in (
+            "D-006",
+            "Autonomous OSS foundation is complete",
+            "Task 14",
+            "owner-side configuration",
+        ):
+            self.assertIn(required, decisions)
+
     def test_readme_and_contributing_link_to_public_roadmap_and_decisions(self):
         for document in (ROOT / "README.md", ROOT / "CONTRIBUTING.md"):
             text = document.read_text(encoding="utf-8")

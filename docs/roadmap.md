@@ -9,12 +9,18 @@ This is a short, evidence-based roadmap for Cited Vault Recall. It lists only cu
 - The product remains local-first, read-only, explicit-vault, and offline by default.
 - No hosted deployment is selected. Public package distribution is not a hosted production service.
 
-## Next autonomous priorities
+## Execution state
 
-1. Improve public documentation, release evidence, contribution intake, and reproducible OSS maintenance checks.
-2. Extend deterministic lexical retrieval evaluation with synthetic fixtures and explicit measurable acceptance criteria.
-3. Improve explicit-vault setup diagnostics and packaging/installation reliability without exposing paths or adding discovery.
-4. Keep CI and dependency-policy boundaries narrow: no unreviewed runtime network access, telemetry, or mandatory model acquisition.
+**Autonomous OSS foundation (Tasks 1–13) is complete.** It delivered public release/evidence truthfulness, maintainer and contributor surfaces, synthetic evaluation/performance boundaries, one path-safe setup remediation, dependency and CI guardrails, a privacy-safe backlog, and a read-only repository hygiene audit.
+
+The next single dependency-gated action is **Task 14**: owner-side PyPI Trusted Publishing configuration. PyPI publication remains pending; no credential, token, browser session, or one-time code is requested in the repository or chat.
+
+Actual and planned owner participation is **4 / 18 = 22.2%**, below the 33% cap: one explicit Task 11 backlog-revision authorization plus the three deliberately late owner steps (Tasks 14, 17, and 18).
+
+## Owner-blocked decisions
+
+- **PyPI Trusted Publishing:** Task 14 requires owner-side configuration before a narrow publication workflow can be reviewed or used.
+- **Hosted-product boundary:** No hosted deployment is selected. Package distribution is not a service deployment; a later owner decision must either retain this boundary or define a separate target and operating model.
 
 ## Deferred and non-goals
 
