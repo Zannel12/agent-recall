@@ -19,6 +19,16 @@
   "schema_version": "1.0",
   "workflows": [
     {
+      "literal_package_installs": [],
+      "path": ".github/workflows/pypi-publish.yml",
+      "uses": [
+        {
+          "classification": "full_sha_format_unverified",
+          "reference": "pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33"
+        }
+      ]
+    },
+    {
       "literal_package_installs": [
         {
           "classification": "version_range_unpinned",

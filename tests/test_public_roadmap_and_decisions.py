@@ -36,18 +36,18 @@ class PublicRoadmapAndDecisionsTests(unittest.TestCase):
         decisions = (ROOT / "docs" / "decisions.md").read_text(encoding="utf-8")
 
         for required in (
-            "Autonomous OSS foundation (Tasks 1–13) is complete",
-            "4 / 18 = 22.2%",
-            "Task 14",
-            "PyPI Trusted Publishing",
+            "Autonomous OSS foundation (Tasks 1–15) is complete",
+            "5 / 18 = 27.8%",
+            "Task 16",
+            "fresh scoped approval",
             "No hosted deployment is selected",
         ):
             self.assertIn(required, roadmap)
         for required in (
             "D-006",
-            "Autonomous OSS foundation is complete",
-            "Task 14",
-            "owner-side configuration",
+            "Tasks 1–15 complete",
+            "Task 16",
+            "fresh scoped approval",
         ):
             self.assertIn(required, decisions)
 

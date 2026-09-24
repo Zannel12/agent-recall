@@ -32,11 +32,11 @@ Cited Vault Recall is not a hosted production service. A GitHub Release or PyPI 
 
 `cited-vault-recall` is not published to PyPI. If publication proceeds, the preferred route is PyPI Trusted Publishing with OIDC and a narrowly reviewed workflow. Tokens, passwords, verification codes, cookies, and browser sessions are never requested or stored in repository automation or chat.
 
-## D-006 — Autonomous OSS foundation is complete; owner gates remain
+## D-006 — Tasks 1–15 complete; PyPI dispatch is a separate approval gate
 
 **Status:** active.
 
-Tasks 1–13 of the public OSS hardening queue are complete from direct repository and CI evidence. The next single dependency-gated action is Task 14, owner-side configuration of PyPI Trusted Publishing. It cannot be replaced by a repository token, chat-provided credential, browser session, or workflow guess.
+Tasks 1–15 of the public OSS hardening queue are complete from direct repository, CI, and owner-confirmed account-side evidence. The pending PyPI Trusted Publisher is bound to the reviewed manual-only OIDC workflow and its `pypi` environment. The next action, Task 16, is an externally irreversible registry publication and requires a fresh scoped approval after a fresh preflight; it cannot be implied by workflow creation, a confirmation string, or the existing GitHub Release.
 
 No hosted deployment is selected. Any change to that boundary remains a later owner-side configuration and architecture decision with a separately specified target, operator, rollback, privacy, observability, retention, and support scope.
 

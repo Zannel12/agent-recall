@@ -33,6 +33,7 @@ class SupplyChainManifestTests(unittest.TestCase):
             [
                 ("actions/checkout@11d5960a326750d5838078e36cf38b85af677262", "full_sha_format_unverified"),
                 ("actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065", "full_sha_format_unverified"),
+                ("pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33", "full_sha_format_unverified"),
             ],
             sorted(set((item["reference"], item["classification"]) for item in actions)),
         )

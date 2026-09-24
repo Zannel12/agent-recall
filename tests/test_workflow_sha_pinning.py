@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 CHECKOUT_SHA = "11d5960a326750d5838078e36cf38b85af677262"
 SETUP_PYTHON_SHA = "a26af69be951a213d495a4c3e4e4022e16d87065"
+PUBLISH_ACTION_SHA = "dc37677b2e1c63e2034f94d8a5b11f265b73ba33"
 
 
 class WorkflowShaPinningTests(unittest.TestCase):
@@ -27,6 +28,7 @@ class WorkflowShaPinningTests(unittest.TestCase):
             {
                 (f"actions/checkout@{CHECKOUT_SHA}", "full_sha_format_unverified"),
                 (f"actions/setup-python@{SETUP_PYTHON_SHA}", "full_sha_format_unverified"),
+                (f"pypa/gh-action-pypi-publish@{PUBLISH_ACTION_SHA}", "full_sha_format_unverified"),
             },
             {(item["reference"], item["classification"]) for item in uses},
         )

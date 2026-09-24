@@ -16,6 +16,8 @@ class ReleaseReadinessTests(unittest.TestCase):
         self.assertIn("## Future external-action gates", text)
         self.assertIn("GitHub Release `v0.2.0` | `READY`", text)
         self.assertIn("PyPI publication | `BLOCKED`", text)
+        self.assertIn("Trusted Publisher and a reviewed manual-only OIDC workflow are configured", text)
+        self.assertIn("fresh explicit approval before dispatch", text)
         self.assertIn("Hosted production deployment | `BLOCKED`", text)
         self.assertIn("Semantic/vector decision gate | `READY`", text)
         self.assertIn("provenance", text)

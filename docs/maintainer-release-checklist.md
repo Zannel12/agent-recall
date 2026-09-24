@@ -54,7 +54,9 @@ Use this checklist for a **new version only**. It is a process aid, not authoriz
 ## 8. PyPI publication
 
 - [ ] Perform a fresh PyPI package/version availability check.
-- [ ] Use a reviewed non-secret route such as PyPI Trusted Publishing; Never paste or store credentials, tokens, passwords, codes, cookies, or browser sessions.
+- [ ] Use the reviewed manual-only workflow `.github/workflows/pypi-publish.yml`; do not add automatic triggers, a checkout step, repository write permissions, or a package-index token.
+- [ ] Dispatch only after a fresh preflight and type the exact workflow confirmation phrase for the reviewed version; its job downloads only the named GitHub Release wheel/sdist and verifies their approved SHA-256 hashes before it can invoke PyPI Trusted Publishing.
+- [ ] Confirm the workflow job uses the dedicated `pypi` environment and only `id-token: write`; Never paste or store credentials, secrets, variables, passwords, tokens, codes, cookies, or browser sessions.
 - [ ] Obtain fresh approval for this one external action.
 - [ ] Publish only the exact wheel and sdist already selected for the release.
 - [ ] Read back the PyPI version and download/hash each package file against the approved artifacts.

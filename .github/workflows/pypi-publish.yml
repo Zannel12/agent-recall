@@ -1,0 +1,50 @@
+name: PyPI publication (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: Type PUBLISH_CITED_VAULT_RECALL_0_2_0 to upload the verified v0.2.0 wheel and sdist.
+        required: true
+        default: DO_NOT_PUBLISH
+        type: string
+
+permissions: {}
+
+jobs:
+  publish:
+    if: ${{ inputs.confirmation == 'PUBLISH_CITED_VAULT_RECALL_0_2_0' }}
+    name: Publish verified v0.2.0 distributions
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+    permissions:
+      id-token: write
+    steps:
+      - name: Download exact GitHub Release distributions
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          curl --fail --location --retry 3 --silent --show-error \
+            --output dist/cited_vault_recall-0.2.0-py3-none-any.whl \
+            https://github.com/Zannel12/agent-recall/releases/download/v0.2.0/cited_vault_recall-0.2.0-py3-none-any.whl
+          curl --fail --location --retry 3 --silent --show-error \
+            --output dist/cited_vault_recall-0.2.0.tar.gz \
+            https://github.com/Zannel12/agent-recall/releases/download/v0.2.0/cited_vault_recall-0.2.0.tar.gz
+      - name: Verify exact approved artifact hashes
+        run: |
+          set -euo pipefail
+          printf '%s  %s\n' \
+            409d8ce7e5480e1649e1c307ca8baf3dfdfb8feaaeb3fcb3620ca2d6ed4527d2 \
+            dist/cited_vault_recall-0.2.0-py3-none-any.whl \
+            > SHA256SUMS
+          printf '%s  %s\n' \
+            f9291b7c9ea46241f8dbc38bff38e438229d6b089b3bbade5a5eea58316a7eb1 \
+            dist/cited_vault_recall-0.2.0.tar.gz \
+            >> SHA256SUMS
+          sha256sum --check SHA256SUMS
+      - name: Publish via PyPI Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+        with:
+          packages-dir: dist/
+          attestations: false
